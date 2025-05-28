@@ -4,8 +4,7 @@
     {% # Inlined CSS Variables %}
     {% render 'css-variables' %}
     
-    {% # Load and preload the critical CSS %}
-    {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
+
     
     {% # Load Arvidsson Main CSS %}
     {{ 'arvidsson-main.css' | asset_url | stylesheet_tag }}
