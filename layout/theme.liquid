@@ -7,11 +7,22 @@
     {% # Load and preload the critical CSS %}
     {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
     
-    {% # Always load Arvidsson Main CSS (contains global styles) %}
+    {% # Load Arvidsson Main CSS %}
     {{ 'arvidsson-main.css' | asset_url | stylesheet_tag }}
     
-    {% # Conditionally load Arvidsson Module CSS %}
-    {% render 'arvidsson-assets' %}
+    {% # Load all Arvidsson Module CSS (for testing) %}
+    {{ 'arvidsson-marquee.css' | asset_url | stylesheet_tag }}
+    {{ 'arvidsson-header.css' | asset_url | stylesheet_tag }}
+    {{ 'arvidsson-hero.css' | asset_url | stylesheet_tag }}
+    {{ 'arvidsson-shop-by-room.css' | asset_url | stylesheet_tag }}
+    {{ 'arvidsson-promotion.css' | asset_url | stylesheet_tag }}
+    {{ 'arvidsson-featured-products.css' | asset_url | stylesheet_tag }}
+    {{ 'arvidsson-product-grid.css' | asset_url | stylesheet_tag }}
+    {{ 'arvidsson-product-filters.css' | asset_url | stylesheet_tag }}
+    {{ 'arvidsson-newsletter.css' | asset_url | stylesheet_tag }}
+    {{ 'arvidsson-top-sellers.css' | asset_url | stylesheet_tag }}
+    {{ 'arvidsson-reviews.css' | asset_url | stylesheet_tag }}
+    {{ 'arvidsson-footer.css' | asset_url | stylesheet_tag }}
     
     {% # Social, title, etc. %}
     {% render 'meta-tags' %}
@@ -22,7 +33,18 @@
     {{ content_for_layout }}
     {% sections 'footer-group' %}
     
-    {% # Conditionally load Arvidsson Module JavaScript %}
-    {% render 'arvidsson-assets', include_js: true %}
+    {% # Load all Arvidsson Module JavaScript (for testing) %}
+    {{ 'arvidsson-marquee.js' | asset_url | script_tag }}
+    {{ 'arvidsson-header.js' | asset_url | script_tag }}
+    {{ 'arvidsson-hero.js' | asset_url | script_tag }}
+    {{ 'arvidsson-shop-by-room.js' | asset_url | script_tag }}
+    {{ 'arvidsson-promotion.js' | asset_url | script_tag }}
+    {{ 'arvidsson-featured-products.js' | asset_url | script_tag }}
+    {{ 'arvidsson-product-grid.js' | asset_url | script_tag }}
+    {{ 'arvidsson-product-filters.js' | asset_url | script_tag }}
+    {{ 'arvidsson-newsletter.js' | asset_url | script_tag }}
+    {{ 'arvidsson-top-sellers.js' | asset_url | script_tag }}
+    {{ 'arvidsson-reviews.js' | asset_url | script_tag }}
+    {{ 'arvidsson-footer.js' | asset_url | script_tag }}
   </body>
 </html>
