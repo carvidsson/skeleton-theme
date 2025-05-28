@@ -3,21 +3,26 @@
   <head>
     {% # Inlined CSS Variables %}
     {% render 'css-variables' %}
-
+    
     {% # Load and preload the critical CSS %}
     {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
-
+    
+    {% # Always load Arvidsson Main CSS (contains global styles) %}
+    {{ 'arvidsson-main.css' | asset_url | stylesheet_tag }}
+    
+    {% # Conditionally load Arvidsson Module CSS %}
+    {% render 'arvidsson-assets' %}
+    
     {% # Social, title, etc. %}
     {% render 'meta-tags' %}
-
     {{ content_for_header }}
   </head>
-
   <body>
     {% sections 'header-group' %}
-
     {{ content_for_layout }}
-
     {% sections 'footer-group' %}
+    
+    {% # Conditionally load Arvidsson Module JavaScript %}
+    {% render 'arvidsson-assets', include_js: true %}
   </body>
 </html>
