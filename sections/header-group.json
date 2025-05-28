@@ -11,6 +11,16 @@
   "type": "header",
   "name": "t:general.header",
   "sections": {
+    "arvidsson_product_filters_kqhULj": {
+      "type": "arvidsson-product-filters",
+      "name": "Product Filters",
+      "settings": {
+        "show_quick_filters": true,
+        "show_advanced_filters": true,
+        "filter_layout": "sidebar",
+        "quick_filter_style": "pills"
+      }
+    },
     "arvidsson_marquee_7pgwit": {
       "type": "arvidsson-marquee",
       "settings": {
@@ -69,7 +79,7 @@
             "description": "Din personliga oas för vila och återhämtning",
             "custom_url": "",
             "overlay_opacity": 0.3,
-            "text_color": "white"
+            "text_color": "dark"
           }
         },
         "room_category_3Emi34": {
@@ -81,53 +91,14 @@
             "description": "Hjärtat i hemmet där måltider skapas och minnen görs",
             "custom_url": "",
             "overlay_opacity": 0.3,
-            "text_color": "white"
-          }
-        },
-        "room_category_E3VNzX": {
-          "type": "room_category",
-          "settings": {
-            "collection": "vardagsrum",
-            "image": "shopify://shop_images/christoffer1629_realistic_photograph_of_a_woman_sitting_comfort_94254dfc-4e6f-4075-92d3-f369b34bb332.png",
-            "title": "Matrum",
-            "description": "Elegant miljö för gemensamma måltider och samvaro",
-            "custom_url": "",
-            "overlay_opacity": 0.3,
-            "text_color": "white"
-          }
-        },
-        "room_category_DbnFjC": {
-          "type": "room_category",
-          "settings": {
-            "collection": "vardagsrum",
-            "image": "shopify://shop_images/christoffer1629_realistic_photograph_of_a_woman_sitting_comfort_94254dfc-4e6f-4075-92d3-f369b34bb332.png",
-            "title": "Badrum",
-            "description": "Personlig spa-upplevelse i ditt eget hem",
-            "custom_url": "",
-            "overlay_opacity": 0.3,
-            "text_color": "white"
-          }
-        },
-        "room_category_8xLB4B": {
-          "type": "room_category",
-          "settings": {
-            "collection": "vardagsrum",
-            "image": "shopify://shop_images/christoffer1629_realistic_photograph_of_a_woman_sitting_comfort_94254dfc-4e6f-4075-92d3-f369b34bb332.png",
-            "title": "Arbetsrum",
-            "description": "Produktiv och inspirerande miljö för arbete och kreativitet",
-            "custom_url": "",
-            "overlay_opacity": 0.3,
-            "text_color": "white"
+            "text_color": "dark"
           }
         }
       },
       "block_order": [
         "room_category_LNMRrV",
         "room_category_gDmtnz",
-        "room_category_3Emi34",
-        "room_category_E3VNzX",
-        "room_category_DbnFjC",
-        "room_category_8xLB4B"
+        "room_category_3Emi34"
       ],
       "settings": {
         "heading": "Handla efter rum",
@@ -259,6 +230,7 @@
     "header",
     "arvidsson_hero_VitDPQ",
     "arvidsson_shop_by_room_eAjQtp",
+    "arvidsson_product_filters_kqhULj",
     "arvidsson_newsletter_cEwajW",
     "arvidsson_top_sellers_WCVQad",
     "arvidsson_reviews_gL6hk8"
