@@ -25,6 +25,7 @@
     },
     "header": {
       "type": "header",
+      "disabled": true,
       "settings": {
         "menu": ""
       }
@@ -42,6 +43,96 @@
         "hero_height": "medium",
         "hero_text_alignment": "left",
         "show_scroll_indicator": true
+      }
+    },
+    "arvidsson_shop_by_room_eAjQtp": {
+      "type": "arvidsson-shop-by-room",
+      "blocks": {
+        "room_category_LNMRrV": {
+          "type": "room_category",
+          "settings": {
+            "collection": "frontpage",
+            "image": "shopify://shop_images/Img.png",
+            "title": "Vardagsrum",
+            "description": "Skapa en mysig och funktionell mötesplats för familj och vänner",
+            "custom_url": "",
+            "overlay_opacity": 0.3,
+            "text_color": "white"
+          }
+        },
+        "room_category_gDmtnz": {
+          "type": "room_category",
+          "settings": {
+            "collection": "vardagsrum",
+            "title": "Sovrum",
+            "description": "Din personliga oas för vila och återhämtning",
+            "custom_url": "",
+            "overlay_opacity": 0.3,
+            "text_color": "white"
+          }
+        },
+        "room_category_3Emi34": {
+          "type": "room_category",
+          "settings": {
+            "collection": "vardagsrum",
+            "title": "Kök",
+            "description": "Hjärtat i hemmet där måltider skapas och minnen görs",
+            "custom_url": "",
+            "overlay_opacity": 0.3,
+            "text_color": "white"
+          }
+        },
+        "room_category_E3VNzX": {
+          "type": "room_category",
+          "settings": {
+            "collection": "vardagsrum",
+            "title": "Matrum",
+            "description": "Elegant miljö för gemensamma måltider och samvaro",
+            "custom_url": "",
+            "overlay_opacity": 0.3,
+            "text_color": "white"
+          }
+        },
+        "room_category_DbnFjC": {
+          "type": "room_category",
+          "settings": {
+            "collection": "vardagsrum",
+            "title": "Badrum",
+            "description": "Personlig spa-upplevelse i ditt eget hem",
+            "custom_url": "",
+            "overlay_opacity": 0.3,
+            "text_color": "white"
+          }
+        },
+        "room_category_8xLB4B": {
+          "type": "room_category",
+          "settings": {
+            "collection": "vardagsrum",
+            "title": "Arbetsrum",
+            "description": "Produktiv och inspirerande miljö för arbete och kreativitet",
+            "custom_url": "",
+            "overlay_opacity": 0.3,
+            "text_color": "white"
+          }
+        }
+      },
+      "block_order": [
+        "room_category_LNMRrV",
+        "room_category_gDmtnz",
+        "room_category_3Emi34",
+        "room_category_E3VNzX",
+        "room_category_DbnFjC",
+        "room_category_8xLB4B"
+      ],
+      "name": "Shop by Room",
+      "settings": {
+        "heading": "Handla efter rum",
+        "subheading": "Upptäck våra kollektioner för varje rum i ditt hem",
+        "layout_style": "grid",
+        "show_product_count": true,
+        "show_view_all": true,
+        "view_all_text": "Visa alla kategorier",
+        "view_all_url": ""
       }
     },
     "arvidsson_newsletter_cEwajW": {
@@ -86,12 +177,88 @@
         "text_alignment": "center",
         "show_benefits": false
       }
+    },
+    "arvidsson_top_sellers_WCVQad": {
+      "type": "arvidsson-top-sellers",
+      "name": "Top Sellers",
+      "settings": {
+        "heading": "Populära produkter",
+        "subheading": "Våra mest älskade produkter",
+        "collection": "vardagsrum",
+        "products_to_show": 8,
+        "card_style": "compact",
+        "show_vendor": true,
+        "show_rating": true,
+        "show_view_all": true
+      }
+    },
+    "arvidsson_reviews_gL6hk8": {
+      "type": "arvidsson-reviews",
+      "blocks": {
+        "review_qMhRA7": {
+          "type": "review",
+          "settings": {
+            "author": "Anna Svensson",
+            "location": "Stockholm",
+            "rating": 5,
+            "title": "Fantastisk kvalitet!",
+            "content": "Köpte en soffa härifrån och är så nöjd. Snabb leverans och bra service. Rekommenderar verkligen Arvidsson till alla!",
+            "product_title": "Skandinavisk 3-sits soffa",
+            "date": "",
+            "verified": true
+          }
+        },
+        "review_BBVecL": {
+          "type": "review",
+          "settings": {
+            "author": "Erik Andersson",
+            "location": "Göteborg",
+            "rating": 5,
+            "title": "Rekommenderar varmt",
+            "content": "Perfekt för vårt nya hem. Skandinavisk design när den är som bäst. Produkterna håller hög kvalitet.",
+            "product_title": "Minimalistiskt matbord",
+            "date": "",
+            "verified": true
+          }
+        },
+        "review_4jWxW6": {
+          "type": "review",
+          "settings": {
+            "author": "Maria Lindqvist",
+            "location": "Malmö",
+            "rating": 4,
+            "title": "Mycket bra",
+            "content": "Vacker lampa som verkligen förhöjer rummet. Lite dyr men värd det. Bra kundservice också.",
+            "product_title": "Modern taklampa",
+            "date": "",
+            "verified": true
+          }
+        }
+      },
+      "block_order": [
+        "review_qMhRA7",
+        "review_BBVecL",
+        "review_4jWxW6"
+      ],
+      "name": "Customer Reviews",
+      "settings": {
+        "heading": "Vad våra kunder säger",
+        "subheading": "Över 10,000+ nöjda kunder har valt Arvidsson",
+        "layout_style": "carousel",
+        "show_overall_rating": true,
+        "show_verified_badge": true,
+        "show_write_review": true,
+        "write_review_url": ""
+      }
     }
   },
   "order": [
     "arvidsson_marquee_7pgwit",
     "header",
     "arvidsson_hero_VitDPQ",
-    "arvidsson_newsletter_cEwajW"
+    "arvidsson_shop_by_room_eAjQtp",
+    "arvidsson_newsletter_cEwajW",
+    "arvidsson_top_sellers_WCVQad",
+    "arvidsson_reviews_gL6hk8"
   ]
 }
