@@ -189,7 +189,7 @@
         "subheading": "Våra mest älskade produkter",
         "collection": "vardagsrum",
         "products_to_show": 8,
-        "card_style": "compact",
+        "card_style": "detailed",
         "show_vendor": true,
         "show_rating": true,
         "show_view_all": true
@@ -246,7 +246,7 @@
       "settings": {
         "heading": "Vad våra kunder säger",
         "subheading": "Över 10,000+ nöjda kunder har valt Arvidsson",
-        "layout_style": "carousel",
+        "layout_style": "masonry",
         "show_overall_rating": true,
         "show_verified_badge": true,
         "show_write_review": true,
