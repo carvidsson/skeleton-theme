@@ -46,5 +46,15 @@
     {{ 'arvidsson-top-sellers.js' | asset_url | script_tag }}
     {{ 'arvidsson-reviews.js' | asset_url | script_tag }}
     {{ 'arvidsson-footer.js' | asset_url | script_tag }}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded');
+    console.log('ArvidssomHeader exists:', typeof ArvidssomHeader !== 'undefined');
+    console.log('ArvidssomMarquee exists:', typeof ArvidssomMarquee !== 'undefined');
+    console.log('window.arvidssomHeader:', window.arvidssomHeader);
+    console.log('window.arvidssomMarquees:', window.arvidssomMarquees);
+  });
+</script>
   </body>
 </html>
