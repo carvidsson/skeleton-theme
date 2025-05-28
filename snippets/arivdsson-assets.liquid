@@ -1,0 +1,104 @@
+{% comment %}
+  Arvidsson Assets Loader
+  Conditionally loads CSS and JS based on sections present on the page
+{% endcomment %}
+
+{% # Get all section types used on the current page %}
+{% assign used_sections = '' %}
+
+{% # Check header sections %}
+{% for section in sections %}
+  {% if section.type contains 'arvidsson' %}
+    {% assign section_name = section.type | replace: 'arvidsson-', '' %}
+    {% unless used_sections contains section_name %}
+      {% assign used_sections = used_sections | append: section_name | append: ',' %}
+    {% endunless %}
+  {% endif %}
+{% endfor %}
+
+{% # Check content_for_layout sections (for templates) %}
+{% if template contains 'product' %}
+  {% assign used_sections = used_sections | append: 'product-grid,product-filters,' %}
+{% endif %}
+
+{% if request.page_type == 'collection' %}
+  {% assign used_sections = used_sections | append: 'product-grid,product-filters,' %}
+{% endif %}
+
+{% # Always load these if header/footer are present %}
+{% if sections.header %}
+  {% assign used_sections = used_sections | append: 'header,marquee,' %}
+{% endif %}
+
+{% if sections.footer %}
+  {% assign used_sections = used_sections | append: 'footer,' %}
+{% endif %}
+
+{% # Convert to array %}
+{% assign sections_array = used_sections | split: ',' %}
+
+{% comment %} Load CSS Files {% endcomment %}
+{% for section_name in sections_array %}
+  {% unless section_name == blank %}
+    {% case section_name %}
+      {% when 'marquee' %}
+        {{ 'arvidsson-marquee.css' | asset_url | stylesheet_tag }}
+      {% when 'header' %}
+        {{ 'arvidsson-header.css' | asset_url | stylesheet_tag }}
+      {% when 'hero' %}
+        {{ 'arvidsson-hero.css' | asset_url | stylesheet_tag }}
+      {% when 'shop-by-room' %}
+        {{ 'arvidsson-shop-by-room.css' | asset_url | stylesheet_tag }}
+      {% when 'promotion' %}
+        {{ 'arvidsson-promotion.css' | asset_url | stylesheet_tag }}
+      {% when 'featured-products' %}
+        {{ 'arvidsson-featured-products.css' | asset_url | stylesheet_tag }}
+      {% when 'product-grid' %}
+        {{ 'arvidsson-product-grid.css' | asset_url | stylesheet_tag }}
+      {% when 'product-filters' %}
+        {{ 'arvidsson-product-filters.css' | asset_url | stylesheet_tag }}
+      {% when 'newsletter' %}
+        {{ 'arvidsson-newsletter.css' | asset_url | stylesheet_tag }}
+      {% when 'top-sellers' %}
+        {{ 'arvidsson-top-sellers.css' | asset_url | stylesheet_tag }}
+      {% when 'reviews' %}
+        {{ 'arvidsson-reviews.css' | asset_url | stylesheet_tag }}
+      {% when 'footer' %}
+        {{ 'arvidsson-footer.css' | asset_url | stylesheet_tag }}
+    {% endcase %}
+  {% endunless %}
+{% endfor %}
+
+{% comment %} JavaScript Loading (to be included before closing body tag) {% endcomment %}
+{% if include_js %}
+  {% for section_name in sections_array %}
+    {% unless section_name == blank %}
+      {% case section_name %}
+        {% when 'marquee' %}
+          {{ 'arvidsson-marquee.js' | asset_url | script_tag }}
+        {% when 'header' %}
+          {{ 'arvidsson-header.js' | asset_url | script_tag }}
+        {% when 'hero' %}
+          {{ 'arvidsson-hero.js' | asset_url | script_tag }}
+        {% when 'shop-by-room' %}
+          {{ 'arvidsson-shop-by-room.js' | asset_url | script_tag }}
+        {% when 'promotion' %}
+          {{ 'arvidsson-promotion.js' | asset_url | script_tag }}
+        {% when 'featured-products' %}
+          {{ 'arvidsson-featured-products.js' | asset_url | script_tag }}
+        {% when 'product-grid' %}
+          {{ 'arvidsson-product-grid.js' | asset_url | script_tag }}
+        {% when 'product-filters' %}
+          {{ 'arvidsson-product-filters.js' | asset_url | script_tag }}
+        {% when 'newsletter' %}
+          {{ 'arvidsson-newsletter.js' | asset_url | script_tag }}
+        {% when 'top-sellers' %}
+          {{ 'arvidsson-top-sellers.js' | asset_url | script_tag }}
+        {% when 'reviews' %}
+          {{ 'arvidsson-reviews.js' | asset_url | script_tag }}
+        {% when 'footer' %}
+          {{ 'arvidsson-footer.js' | asset_url | script_tag }}
+      {% endcase %}
+    {% endunless %}
+  {% endfor %}
+{% endif %}
