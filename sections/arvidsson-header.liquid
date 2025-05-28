@@ -17,7 +17,6 @@
 <header class="arvidsson-header" id="header">
   <div class="container-wide">
     <div class="arvidsson-header__content">
-      
       <!-- Mobile Menu Toggle -->
       <button class="arvidsson-header__mobile-toggle" aria-label="Öppna meny" aria-expanded="false">
         <span></span>
@@ -29,9 +28,11 @@
       <div class="arvidsson-header__logo">
         <a href="{{ routes.root_url }}" class="arvidsson-header__logo-link">
           {% if settings.logo %}
-            <img src="{{ settings.logo | img_url: '200x' }}" 
-                 alt="{{ shop.name }}" 
-                 class="arvidsson-header__logo-img">
+            <img
+              src="{{ settings.logo | img_url: '200x' }}"
+              alt="{{ shop.name }}"
+              class="arvidsson-header__logo-img"
+            >
           {% else %}
             <span class="arvidsson-header__logo-text">{{ shop.name }}</span>
           {% endif %}
@@ -41,11 +42,15 @@
       <!-- Desktop Navigation -->
       <nav class="arvidsson-header__nav" aria-label="Huvudnavigation">
         <ul class="arvidsson-header__nav-list">
-          {% for link in linklists.main-menu.links %}
+          {% for link in linklists['main-menu'].links %}
             <li class="arvidsson-header__nav-item {% if link.links.size > 0 %}has-dropdown{% endif %}">
-              <a href="{{ link.url }}" 
-                 class="arvidsson-header__nav-link {% if link.active %}active{% endif %}"
-                 {% if link.links.size > 0 %}aria-haspopup="true" aria-expanded="false"{% endif %}>
+              <a
+                href="{{ link.url }}"
+                class="arvidsson-header__nav-link {% if link.active %}active{% endif %}"
+                {% if link.links.size > 0 %}
+                  aria-haspopup="true" aria-expanded="false"
+                {% endif %}
+              >
                 {{ link.title }}
                 {% if link.links.size > 0 %}
                   <svg class="arvidsson-header__nav-arrow" width="12" height="8" viewBox="0 0 12 8">
@@ -53,15 +58,17 @@
                   </svg>
                 {% endif %}
               </a>
-              
+
               {% if link.links.size > 0 %}
                 <div class="arvidsson-header__dropdown">
                   <div class="arvidsson-header__dropdown-content">
                     <ul class="arvidsson-header__dropdown-list">
                       {% for childlink in link.links %}
                         <li class="arvidsson-header__dropdown-item">
-                          <a href="{{ childlink.url }}" 
-                             class="arvidsson-header__dropdown-link {% if childlink.active %}active{% endif %}">
+                          <a
+                            href="{{ childlink.url }}"
+                            class="arvidsson-header__dropdown-link {% if childlink.active %}active{% endif %}"
+                          >
                             {{ childlink.title }}
                           </a>
                         </li>
@@ -79,12 +86,14 @@
       <div class="arvidsson-header__search">
         <form action="{{ routes.search_url }}" method="get" class="arvidsson-header__search-form">
           <div class="arvidsson-header__search-wrapper">
-            <input type="search" 
-                   name="q" 
-                   placeholder="Sök produkter..." 
-                   value="{{ search.terms | escape }}"
-                   class="arvidsson-header__search-input"
-                   aria-label="Sök produkter">
+            <input
+              type="search"
+              name="q"
+              placeholder="Sök produkter..."
+              value="{{ search.terms | escape }}"
+              class="arvidsson-header__search-input"
+              aria-label="Sök produkter"
+            >
             <button type="submit" class="arvidsson-header__search-btn" aria-label="Sök">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                 <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
@@ -97,7 +106,6 @@
 
       <!-- Header Actions -->
       <div class="arvidsson-header__actions">
-        
         <!-- Account -->
         <a href="{{ routes.account_url }}" class="arvidsson-header__action" aria-label="Mitt konto">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -125,7 +133,6 @@
           <span class="arvidsson-header__action-text">Kundvagn</span>
           <span class="arvidsson-header__cart-count" id="cart-count">{{ cart.item_count }}</span>
         </a>
-
       </div>
     </div>
   </div>
@@ -133,16 +140,17 @@
   <!-- Mobile Navigation -->
   <div class="arvidsson-header__mobile-nav" id="mobile-nav">
     <div class="arvidsson-header__mobile-nav-content">
-      
       <!-- Mobile Search -->
       <div class="arvidsson-header__mobile-search">
         <form action="{{ routes.search_url }}" method="get">
           <div class="arvidsson-header__search-wrapper">
-            <input type="search" 
-                   name="q" 
-                   placeholder="Sök produkter..." 
-                   value="{{ search.terms | escape }}"
-                   class="arvidsson-header__search-input">
+            <input
+              type="search"
+              name="q"
+              placeholder="Sök produkter..."
+              value="{{ search.terms | escape }}"
+              class="arvidsson-header__search-input"
+            >
             <button type="submit" class="arvidsson-header__search-btn" aria-label="Sök">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                 <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
@@ -156,10 +164,12 @@
       <!-- Mobile Menu Items -->
       <nav class="arvidsson-header__mobile-menu" aria-label="Mobilnavigation">
         <ul class="arvidsson-header__mobile-list">
-          {% for link in linklists.main-menu.links %}
+          {% for link in linklists['main-menu'].links %}
             <li class="arvidsson-header__mobile-item">
-              <a href="{{ link.url }}" 
-                 class="arvidsson-header__mobile-link {% if link.active %}active{% endif %}">
+              <a
+                href="{{ link.url }}"
+                class="arvidsson-header__mobile-link {% if link.active %}active{% endif %}"
+              >
                 {{ link.title }}
                 {% if link.links.size > 0 %}
                   <svg class="arvidsson-header__mobile-arrow" width="12" height="8" viewBox="0 0 12 8">
@@ -167,13 +177,15 @@
                   </svg>
                 {% endif %}
               </a>
-              
+
               {% if link.links.size > 0 %}
                 <ul class="arvidsson-header__mobile-submenu">
                   {% for childlink in link.links %}
                     <li class="arvidsson-header__mobile-subitem">
-                      <a href="{{ childlink.url }}" 
-                         class="arvidsson-header__mobile-sublink {% if childlink.active %}active{% endif %}">
+                      <a
+                        href="{{ childlink.url }}"
+                        class="arvidsson-header__mobile-sublink {% if childlink.active %}active{% endif %}"
+                      >
                         {{ childlink.title }}
                       </a>
                     </li>
@@ -182,7 +194,7 @@
               {% endif %}
             </li>
           {% endfor %}
-          
+
           <!-- Mobile Account Links -->
           <li class="arvidsson-header__mobile-item arvidsson-header__mobile-item--account">
             <a href="{{ routes.account_url }}" class="arvidsson-header__mobile-link">
@@ -193,7 +205,7 @@
               Mitt konto
             </a>
           </li>
-          
+
           <li class="arvidsson-header__mobile-item arvidsson-header__mobile-item--wishlist">
             <a href="{{ routes.collections_url }}/wishlist" class="arvidsson-header__mobile-link">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
