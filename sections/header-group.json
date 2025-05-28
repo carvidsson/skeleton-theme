@@ -52,7 +52,7 @@
           "type": "room_category",
           "settings": {
             "collection": "frontpage",
-            "image": "shopify://shop_images/Img.png",
+            "image": "shopify://shop_images/christoffer1629_realistic_photograph_of_a_woman_sitting_comfort_94254dfc-4e6f-4075-92d3-f369b34bb332.png",
             "title": "Vardagsrum",
             "description": "Skapa en mysig och funktionell mötesplats för familj och vänner",
             "custom_url": "",
@@ -64,6 +64,7 @@
           "type": "room_category",
           "settings": {
             "collection": "vardagsrum",
+            "image": "shopify://shop_images/christoffer1629_realistic_photograph_of_a_woman_sitting_comfort_94254dfc-4e6f-4075-92d3-f369b34bb332.png",
             "title": "Sovrum",
             "description": "Din personliga oas för vila och återhämtning",
             "custom_url": "",
@@ -75,6 +76,7 @@
           "type": "room_category",
           "settings": {
             "collection": "vardagsrum",
+            "image": "shopify://shop_images/christoffer1629_realistic_photograph_of_a_woman_sitting_comfort_94254dfc-4e6f-4075-92d3-f369b34bb332.png",
             "title": "Kök",
             "description": "Hjärtat i hemmet där måltider skapas och minnen görs",
             "custom_url": "",
@@ -86,6 +88,7 @@
           "type": "room_category",
           "settings": {
             "collection": "vardagsrum",
+            "image": "shopify://shop_images/christoffer1629_realistic_photograph_of_a_woman_sitting_comfort_94254dfc-4e6f-4075-92d3-f369b34bb332.png",
             "title": "Matrum",
             "description": "Elegant miljö för gemensamma måltider och samvaro",
             "custom_url": "",
@@ -97,6 +100,7 @@
           "type": "room_category",
           "settings": {
             "collection": "vardagsrum",
+            "image": "shopify://shop_images/christoffer1629_realistic_photograph_of_a_woman_sitting_comfort_94254dfc-4e6f-4075-92d3-f369b34bb332.png",
             "title": "Badrum",
             "description": "Personlig spa-upplevelse i ditt eget hem",
             "custom_url": "",
@@ -108,6 +112,7 @@
           "type": "room_category",
           "settings": {
             "collection": "vardagsrum",
+            "image": "shopify://shop_images/christoffer1629_realistic_photograph_of_a_woman_sitting_comfort_94254dfc-4e6f-4075-92d3-f369b34bb332.png",
             "title": "Arbetsrum",
             "description": "Produktiv och inspirerande miljö för arbete och kreativitet",
             "custom_url": "",
