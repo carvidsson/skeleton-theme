@@ -1,0 +1,212 @@
+{% comment %}
+  Arvidsson Header Module
+  Includes logo, navigation, search, and cart
+{% endcomment %}
+
+<div class="arvidsson-marquee">
+  <div class="arvidsson-marquee__content">
+    <span>Fri frakt över 999 kr</span>
+    <span>30 dagars öppet köp</span>
+    <span>Snabb leverans</span>
+    <span>Fri frakt över 999 kr</span>
+    <span>30 dagars öppet köp</span>
+    <span>Snabb leverans</span>
+  </div>
+</div>
+
+<header class="arvidsson-header" id="header">
+  <div class="container-wide">
+    <div class="arvidsson-header__content">
+      
+      <!-- Mobile Menu Toggle -->
+      <button class="arvidsson-header__mobile-toggle" aria-label="Öppna meny" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <!-- Logo -->
+      <div class="arvidsson-header__logo">
+        <a href="{{ routes.root_url }}" class="arvidsson-header__logo-link">
+          {% if settings.logo %}
+            <img src="{{ settings.logo | img_url: '200x' }}" 
+                 alt="{{ shop.name }}" 
+                 class="arvidsson-header__logo-img">
+          {% else %}
+            <span class="arvidsson-header__logo-text">{{ shop.name }}</span>
+          {% endif %}
+        </a>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="arvidsson-header__nav" aria-label="Huvudnavigation">
+        <ul class="arvidsson-header__nav-list">
+          {% for link in linklists.main-menu.links %}
+            <li class="arvidsson-header__nav-item {% if link.links.size > 0 %}has-dropdown{% endif %}">
+              <a href="{{ link.url }}" 
+                 class="arvidsson-header__nav-link {% if link.active %}active{% endif %}"
+                 {% if link.links.size > 0 %}aria-haspopup="true" aria-expanded="false"{% endif %}>
+                {{ link.title }}
+                {% if link.links.size > 0 %}
+                  <svg class="arvidsson-header__nav-arrow" width="12" height="8" viewBox="0 0 12 8">
+                    <path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                  </svg>
+                {% endif %}
+              </a>
+              
+              {% if link.links.size > 0 %}
+                <div class="arvidsson-header__dropdown">
+                  <div class="arvidsson-header__dropdown-content">
+                    <ul class="arvidsson-header__dropdown-list">
+                      {% for childlink in link.links %}
+                        <li class="arvidsson-header__dropdown-item">
+                          <a href="{{ childlink.url }}" 
+                             class="arvidsson-header__dropdown-link {% if childlink.active %}active{% endif %}">
+                            {{ childlink.title }}
+                          </a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+
+      <!-- Search -->
+      <div class="arvidsson-header__search">
+        <form action="{{ routes.search_url }}" method="get" class="arvidsson-header__search-form">
+          <div class="arvidsson-header__search-wrapper">
+            <input type="search" 
+                   name="q" 
+                   placeholder="Sök produkter..." 
+                   value="{{ search.terms | escape }}"
+                   class="arvidsson-header__search-input"
+                   aria-label="Sök produkter">
+            <button type="submit" class="arvidsson-header__search-btn" aria-label="Sök">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Header Actions -->
+      <div class="arvidsson-header__actions">
+        
+        <!-- Account -->
+        <a href="{{ routes.account_url }}" class="arvidsson-header__action" aria-label="Mitt konto">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <span class="arvidsson-header__action-text">Konto</span>
+        </a>
+
+        <!-- Wishlist -->
+        <a href="{{ routes.collections_url }}/wishlist" class="arvidsson-header__action" aria-label="Önskelista">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <span class="arvidsson-header__action-text">Önskelista</span>
+        </a>
+
+        <!-- Cart -->
+        <a href="{{ routes.cart_url }}" class="arvidsson-header__action arvidsson-header__cart" aria-label="Varukorg">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z" fill="currentColor"/>
+            <path d="M20 22C20.5523 22 21 21.5523 21 21C21 20.4477 20.5523 20 20 20C19.4477 20 19 20.4477 19 21C19 21.5523 19.4477 22 20 22Z" fill="currentColor"/>
+            <path d="M1 1H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6" stroke="currentColor" stroke-width="2" fill="none"/>
+          </svg>
+          <span class="arvidsson-header__action-text">Kundvagn</span>
+          <span class="arvidsson-header__cart-count" id="cart-count">{{ cart.item_count }}</span>
+        </a>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation -->
+  <div class="arvidsson-header__mobile-nav" id="mobile-nav">
+    <div class="arvidsson-header__mobile-nav-content">
+      
+      <!-- Mobile Search -->
+      <div class="arvidsson-header__mobile-search">
+        <form action="{{ routes.search_url }}" method="get">
+          <div class="arvidsson-header__search-wrapper">
+            <input type="search" 
+                   name="q" 
+                   placeholder="Sök produkter..." 
+                   value="{{ search.terms | escape }}"
+                   class="arvidsson-header__search-input">
+            <button type="submit" class="arvidsson-header__search-btn" aria-label="Sök">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Mobile Menu Items -->
+      <nav class="arvidsson-header__mobile-menu" aria-label="Mobilnavigation">
+        <ul class="arvidsson-header__mobile-list">
+          {% for link in linklists.main-menu.links %}
+            <li class="arvidsson-header__mobile-item">
+              <a href="{{ link.url }}" 
+                 class="arvidsson-header__mobile-link {% if link.active %}active{% endif %}">
+                {{ link.title }}
+                {% if link.links.size > 0 %}
+                  <svg class="arvidsson-header__mobile-arrow" width="12" height="8" viewBox="0 0 12 8">
+                    <path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                  </svg>
+                {% endif %}
+              </a>
+              
+              {% if link.links.size > 0 %}
+                <ul class="arvidsson-header__mobile-submenu">
+                  {% for childlink in link.links %}
+                    <li class="arvidsson-header__mobile-subitem">
+                      <a href="{{ childlink.url }}" 
+                         class="arvidsson-header__mobile-sublink {% if childlink.active %}active{% endif %}">
+                        {{ childlink.title }}
+                      </a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+          
+          <!-- Mobile Account Links -->
+          <li class="arvidsson-header__mobile-item arvidsson-header__mobile-item--account">
+            <a href="{{ routes.account_url }}" class="arvidsson-header__mobile-link">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+                <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              Mitt konto
+            </a>
+          </li>
+          
+          <li class="arvidsson-header__mobile-item arvidsson-header__mobile-item--wishlist">
+            <a href="{{ routes.collections_url }}/wishlist" class="arvidsson-header__mobile-link">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              Önskelista
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation Overlay -->
+  <div class="arvidsson-header__overlay" id="mobile-overlay"></div>
+</header>

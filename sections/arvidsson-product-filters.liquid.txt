@@ -1,0 +1,440 @@
+{% comment %}
+  Arvidsson Product Filters Module
+  Quick filters and advanced filter panel for product collections
+{% endcomment %}
+
+{% assign show_quick_filters = section.settings.show_quick_filters | default: true %}
+{% assign show_advanced_filters = section.settings.show_advanced_filters | default: true %}
+{% assign filter_layout = section.settings.filter_layout | default: 'sidebar' %}
+{% assign quick_filter_style = section.settings.quick_filter_style | default: 'pills' %}
+
+<div class="arvidsson-product-filters arvidsson-product-filters--{{ filter_layout }}" 
+     id="product-filters-{{ section.id }}"
+     data-section-id="{{ section.id }}"
+     data-section-type="product-filters">
+
+  <!-- Quick Filters -->
+  {% if show_quick_filters %}
+    <div class="arvidsson-product-filters__quick">
+      <div class="container">
+        <div class="arvidsson-product-filters__quick-header">
+          <h3 class="arvidsson-product-filters__quick-title">Snabbfilter</h3>
+        </div>
+        
+        <div class="arvidsson-product-filters__quick-list arvidsson-product-filters__quick-list--{{ quick_filter_style }}">
+          
+          <!-- Category Filters -->
+          {% if collection.all_types.size > 0 %}
+            <div class="arvidsson-product-filters__quick-group">
+              <span class="arvidsson-product-filters__quick-label">Typ:</span>
+              <button class="arvidsson-product-filters__quick-btn {% unless collection.current_type %}active{% endunless %}" 
+                      data-filter-type="type" 
+                      data-filter-value="">
+                Alla
+              </button>
+              {% for product_type in collection.all_types limit: 6 %}
+                <button class="arvidsson-product-filters__quick-btn {% if collection.current_type == product_type %}active{% endif %}" 
+                        data-filter-type="type" 
+                        data-filter-value="{{ product_type | handle }}">
+                  {{ product_type }}
+                </button>
+              {% endfor %}
+            </div>
+          {% endif %}
+          
+          <!-- Vendor Filters -->
+          {% if collection.all_vendors.size > 0 %}
+            <div class="arvidsson-product-filters__quick-group">
+              <span class="arvidsson-product-filters__quick-label">Märke:</span>
+              <button class="arvidsson-product-filters__quick-btn {% unless collection.current_vendor %}active{% endunless %}" 
+                      data-filter-type="vendor" 
+                      data-filter-value="">
+                Alla
+              </button>
+              {% for vendor in collection.all_vendors limit: 5 %}
+                <button class="arvidsson-product-filters__quick-btn {% if collection.current_vendor == vendor %}active{% endif %}" 
+                        data-filter-type="vendor" 
+                        data-filter-value="{{ vendor | handle }}">
+                  {{ vendor }}
+                </button>
+              {% endfor %}
+            </div>
+          {% endif %}
+          
+          <!-- Price Range Quick Filters -->
+          <div class="arvidsson-product-filters__quick-group">
+            <span class="arvidsson-product-filters__quick-label">Pris:</span>
+            <button class="arvidsson-product-filters__quick-btn active" 
+                    data-filter-type="price" 
+                    data-filter-value="">
+              Alla
+            </button>
+            <button class="arvidsson-product-filters__quick-btn" 
+                    data-filter-type="price" 
+                    data-filter-value="0-500">
+              Under 500 kr
+            </button>
+            <button class="arvidsson-product-filters__quick-btn" 
+                    data-filter-type="price" 
+                    data-filter-value="500-1000">
+              500-1000 kr
+            </button>
+            <button class="arvidsson-product-filters__quick-btn" 
+                    data-filter-type="price" 
+                    data-filter-value="1000-2500">
+              1000-2500 kr
+            </button>
+            <button class="arvidsson-product-filters__quick-btn" 
+                    data-filter-type="price" 
+                    data-filter-value="2500+">
+              Över 2500 kr
+            </button>
+          </div>
+          
+          <!-- Availability Filter -->
+          <div class="arvidsson-product-filters__quick-group">
+            <span class="arvidsson-product-filters__quick-label">Tillgänglighet:</span>
+            <button class="arvidsson-product-filters__quick-btn active" 
+                    data-filter-type="availability" 
+                    data-filter-value="">
+              Alla
+            </button>
+            <button class="arvidsson-product-filters__quick-btn" 
+                    data-filter-type="availability" 
+                    data-filter-value="in-stock">
+              I lager
+            </button>
+            <button class="arvidsson-product-filters__quick-btn" 
+                    data-filter-type="availability" 
+                    data-filter-value="on-sale">
+              På rea
+            </button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Advanced Filters Toggle -->
+  {% if show_advanced_filters %}
+    <div class="arvidsson-product-filters__toggle-wrapper">
+      <div class="container">
+        <button class="arvidsson-product-filters__toggle" 
+                id="advanced-filters-toggle"
+                aria-expanded="false"
+                aria-controls="advanced-filters-panel">
+          <svg class="arvidsson-product-filters__toggle-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="arvidsson-product-filters__toggle-text">Avancerade filter</span>
+          <svg class="arvidsson-product-filters__toggle-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M7 13l5 5 5-5M7 6l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="arvidsson-product-filters__active-count" style="display: none;">0</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Advanced Filters Panel -->
+    <div class="arvidsson-product-filters__advanced" 
+         id="advanced-filters-panel"
+         aria-hidden="true">
+      <div class="container">
+        <div class="arvidsson-product-filters__advanced-content">
+          
+          <!-- Filter Header -->
+          <div class="arvidsson-product-filters__advanced-header">
+            <h3 class="arvidsson-product-filters__advanced-title">Filtrera produkter</h3>
+            <button class="arvidsson-product-filters__clear-all" 
+                    id="clear-all-filters"
+                    style="display: none;">
+              Rensa alla filter
+            </button>
+          </div>
+          
+          <div class="arvidsson-product-filters__advanced-grid">
+            
+            <!-- Price Range Filter -->
+            <div class="arvidsson-product-filters__group">
+              <h4 class="arvidsson-product-filters__group-title">Prisintervall</h4>
+              <div class="arvidsson-product-filters__price-range">
+                <div class="arvidsson-product-filters__price-inputs">
+                  <input type="number" 
+                         class="arvidsson-product-filters__price-input" 
+                         id="price-min" 
+                         placeholder="Min"
+                         min="0"
+                         step="50">
+                  <span class="arvidsson-product-filters__price-separator">-</span>
+                  <input type="number" 
+                         class="arvidsson-product-filters__price-input" 
+                         id="price-max" 
+                         placeholder="Max"
+                         min="0"
+                         step="50">
+                </div>
+                <div class="arvidsson-product-filters__price-slider">
+                  <input type="range" 
+                         class="arvidsson-product-filters__range-slider" 
+                         id="price-range-min" 
+                         min="0" 
+                         max="10000" 
+                         value="0" 
+                         step="50">
+                  <input type="range" 
+                         class="arvidsson-product-filters__range-slider" 
+                         id="price-range-max" 
+                         min="0" 
+                         max="10000" 
+                         value="10000" 
+                         step="50">
+                </div>
+              </div>
+            </div>
+            
+            <!-- Brand Filter -->
+            {% if collection.all_vendors.size > 0 %}
+              <div class="arvidsson-product-filters__group">
+                <h4 class="arvidsson-product-filters__group-title">Märke</h4>
+                <div class="arvidsson-product-filters__search">
+                  <input type="search" 
+                         class="arvidsson-product-filters__search-input" 
+                         placeholder="Sök märke..."
+                         data-search-type="vendors">
+                </div>
+                <div class="arvidsson-product-filters__checkbox-list" data-max-height="200">
+                  {% for vendor in collection.all_vendors %}
+                    <label class="arvidsson-product-filters__checkbox">
+                      <input type="checkbox" 
+                             name="vendor" 
+                             value="{{ vendor | handle }}"
+                             data-filter-checkbox>
+                      <span class="arvidsson-product-filters__checkbox-mark"></span>
+                      <span class="arvidsson-product-filters__checkbox-text">{{ vendor }}</span>
+                    </label>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+            
+            <!-- Product Type Filter -->
+            {% if collection.all_types.size > 0 %}
+              <div class="arvidsson-product-filters__group">
+                <h4 class="arvidsson-product-filters__group-title">Produkttyp</h4>
+                <div class="arvidsson-product-filters__checkbox-list" data-max-height="150">
+                  {% for product_type in collection.all_types %}
+                    <label class="arvidsson-product-filters__checkbox">
+                      <input type="checkbox" 
+                             name="type" 
+                             value="{{ product_type | handle }}"
+                             data-filter-checkbox>
+                      <span class="arvidsson-product-filters__checkbox-mark"></span>
+                      <span class="arvidsson-product-filters__checkbox-text">{{ product_type }}</span>
+                    </label>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+            
+            <!-- Color Filter (using product tags) -->
+            {% assign color_tags = collection.all_tags | where: 'color' %}
+            {% if color_tags.size > 0 %}
+              <div class="arvidsson-product-filters__group">
+                <h4 class="arvidsson-product-filters__group-title">Färg</h4>
+                <div class="arvidsson-product-filters__color-list">
+                  {% for tag in collection.all_tags %}
+                    {% if tag contains 'color-' %}
+                      {% assign color_name = tag | remove: 'color-' | capitalize %}
+                      {% assign color_value = tag | remove: 'color-' %}
+                      <label class="arvidsson-product-filters__color-option">
+                        <input type="checkbox" 
+                               name="color" 
+                               value="{{ tag }}"
+                               data-filter-checkbox>
+                        <span class="arvidsson-product-filters__color-swatch" 
+                              style="background-color: {{ color_value }};"
+                              title="{{ color_name }}"></span>
+                        <span class="arvidsson-product-filters__color-name">{{ color_name }}</span>
+                      </label>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+            
+            <!-- Size Filter (using product tags) -->
+            {% assign size_tags = collection.all_tags | where: 'size' %}
+            {% if size_tags.size > 0 %}
+              <div class="arvidsson-product-filters__group">
+                <h4 class="arvidsson-product-filters__group-title">Storlek</h4>
+                <div class="arvidsson-product-filters__size-list">
+                  {% assign sizes = 'Small,Medium,Large,XL,XXL' | split: ',' %}
+                  {% for size in sizes %}
+                    {% assign size_tag = 'size-' | append: size | downcase %}
+                    {% if collection.all_tags contains size_tag %}
+                      <label class="arvidsson-product-filters__size-option">
+                        <input type="checkbox" 
+                               name="size" 
+                               value="{{ size_tag }}"
+                               data-filter-checkbox>
+                        <span class="arvidsson-product-filters__size-button">{{ size }}</span>
+                      </label>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+            
+            <!-- Material Filter -->
+            <div class="arvidsson-product-filters__group">
+              <h4 class="arvidsson-product-filters__group-title">Material</h4>
+              <div class="arvidsson-product-filters__checkbox-list" data-max-height="120">
+                {% assign materials = 'Trä,Metall,Glas,Plast,Tyg,Läder,Keramik,Sten' | split: ',' %}
+                {% for material in materials %}
+                  {% assign material_tag = 'material-' | append: material | downcase %}
+                  {% if collection.all_tags contains material_tag %}
+                    <label class="arvidsson-product-filters__checkbox">
+                      <input type="checkbox" 
+                             name="material" 
+                             value="{{ material_tag }}"
+                             data-filter-checkbox>
+                      <span class="arvidsson-product-filters__checkbox-mark"></span>
+                      <span class="arvidsson-product-filters__checkbox-text">{{ material }}</span>
+                    </label>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+            
+            <!-- Room Filter -->
+            <div class="arvidsson-product-filters__group">
+              <h4 class="arvidsson-product-filters__group-title">Rum</h4>
+              <div class="arvidsson-product-filters__checkbox-list" data-max-height="120">
+                {% assign rooms = 'Vardagsrum,Sovrum,Kök,Matrum,Badrum,Barnrum,Arbetsrum,Hall' | split: ',' %}
+                {% for room in rooms %}
+                  {% assign room_tag = 'room-' | append: room | downcase %}
+                  {% if collection.all_tags contains room_tag %}
+                    <label class="arvidsson-product-filters__checkbox">
+                      <input type="checkbox" 
+                             name="room" 
+                             value="{{ room_tag }}"
+                             data-filter-checkbox>
+                      <span class="arvidsson-product-filters__checkbox-mark"></span>
+                      <span class="arvidsson-product-filters__checkbox-text">{{ room }}</span>
+                    </label>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+            
+          </div>
+          
+          <!-- Filter Actions -->
+          <div class="arvidsson-product-filters__actions">
+            <button class="btn btn--secondary arvidsson-product-filters__clear" 
+                    id="clear-filters">
+              Rensa filter
+            </button>
+            <button class="btn arvidsson-product-filters__apply" 
+                    id="apply-filters">
+              Använd filter
+              <span class="arvidsson-product-filters__apply-count"></span>
+            </button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Active Filters Display -->
+  <div class="arvidsson-product-filters__active" 
+       id="active-filters" 
+       style="display: none;">
+    <div class="container">
+      <div class="arvidsson-product-filters__active-content">
+        <span class="arvidsson-product-filters__active-label">Aktiva filter:</span>
+        <div class="arvidsson-product-filters__active-list" id="active-filters-list">
+          <!-- Active filters will be inserted here by JavaScript -->
+        </div>
+        <button class="arvidsson-product-filters__clear-all-active" 
+                id="clear-all-active">
+          Rensa alla
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "Product Filters",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Filter Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_filters",
+      "label": "Show quick filters",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_advanced_filters",
+      "label": "Show advanced filters",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "filter_layout",
+      "label": "Filter Layout",
+      "options": [
+        {
+          "value": "sidebar",
+          "label": "Sidebar"
+        },
+        {
+          "value": "horizontal",
+          "label": "Horizontal"
+        },
+        {
+          "value": "dropdown",
+          "label": "Dropdown"
+        }
+      ],
+      "default": "sidebar"
+    },
+    {
+      "type": "select",
+      "id": "quick_filter_style",
+      "label": "Quick Filter Style",
+      "options": [
+        {
+          "value": "pills",
+          "label": "Pills"
+        },
+        {
+          "value": "buttons",
+          "label": "Buttons"
+        },
+        {
+          "value": "tabs",
+          "label": "Tabs"
+        }
+      ],
+      "default": "pills"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Filters"
+    }
+  ]
+}
+{% endschema %}

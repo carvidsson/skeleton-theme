@@ -1,0 +1,460 @@
+{% comment %}
+  Arvidsson Promotion Module
+  Horizontally scrolling gallery with centered text and CTA buttons
+{% endcomment %}
+
+{% assign section_heading = section.settings.heading | default: 'Upptäck våra kampanjer' %}
+{% assign section_subheading = section.settings.subheading | default: 'Exklusiva erbjudanden och begränsade kollektioner' %}
+{% assign layout_style = section.settings.layout_style | default: 'carousel' %}
+{% assign slide_duration = section.settings.slide_duration | default: 5000 %}
+{% assign show_navigation = section.settings.show_navigation | default: true %}
+{% assign show_pagination = section.settings.show_pagination | default: true %}
+{% assign autoplay = section.settings.autoplay | default: false %}
+{% assign background_color = section.settings.background_color | default: 'light' %}
+
+<section class="arvidsson-promotion arvidsson-promotion--{{ background_color }} arvidsson-promotion--{{ layout_style }} section" 
+         id="promotion-{{ section.id }}"
+         data-section-id="{{ section.id }}"
+         data-section-type="promotion"
+         data-autoplay="{{ autoplay }}"
+         data-slide-duration="{{ slide_duration }}">
+  
+  <div class="container-wide">
+    
+    <!-- Section Header -->
+    {% if section_heading or section_subheading %}
+      <div class="arvidsson-promotion__header text-center">
+        {% if section_subheading and section_subheading != blank %}
+          <p class="arvidsson-promotion__subheading">{{ section_subheading }}</p>
+        {% endif %}
+        
+        {% if section_heading and section_heading != blank %}
+          <h2 class="arvidsson-promotion__heading">{{ section_heading }}</h2>
+        {% endif %}
+      </div>
+    {% endif %}
+    
+    <!-- Promotion Gallery -->
+    <div class="arvidsson-promotion__container">
+      
+      <!-- Navigation -->
+      {% if show_navigation and section.blocks.size > 1 %}
+        <button class="arvidsson-promotion__nav arvidsson-promotion__nav--prev" 
+                aria-label="Föregående kampanj"
+                data-promotion-prev>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="arvidsson-promotion__nav arvidsson-promotion__nav--next" 
+                aria-label="Nästa kampanj"
+                data-promotion-next>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      {% endif %}
+      
+      <!-- Slides Container -->
+      <div class="arvidsson-promotion__slides" 
+           data-promotion-slides
+           style="--slides-count: {{ section.blocks.size }};">
+        
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'promotion_slide' %}
+              {% assign slide_image = block.settings.image %}
+              {% assign slide_title = block.settings.title %}
+              {% assign slide_subtitle = block.settings.subtitle %}
+              {% assign slide_description = block.settings.description %}
+              {% assign slide_button_text = block.settings.button_text %}
+              {% assign slide_button_url = block.settings.button_url %}
+              {% assign slide_secondary_button_text = block.settings.secondary_button_text %}
+              {% assign slide_secondary_button_url = block.settings.secondary_button_url %}
+              {% assign slide_overlay_opacity = block.settings.overlay_opacity | default: 0.4 %}
+              {% assign slide_text_alignment = block.settings.text_alignment | default: 'center' %}
+              {% assign slide_text_color = block.settings.text_color | default: 'white' %}
+              {% assign slide_image_position = block.settings.image_position | default: 'center' %}
+              
+              <div class="arvidsson-promotion__slide arvidsson-promotion__slide--{{ slide_text_alignment }} arvidsson-promotion__slide--{{ slide_text_color }}" 
+                   {{ block.shopify_attributes }}
+                   data-slide-index="{{ forloop.index0 }}">
+                
+                <!-- Slide Media -->
+                <div class="arvidsson-promotion__slide-media">
+                  {% if slide_image %}
+                    <picture class="arvidsson-promotion__slide-picture">
+                      <source media="(max-width: 767px)" 
+                              srcset="{{ slide_image | img_url: '800x600' }} 800w,
+                                      {{ slide_image | img_url: '1200x900' }} 1200w"
+                              sizes="100vw">
+                      <source media="(max-width: 1023px)" 
+                              srcset="{{ slide_image | img_url: '1200x800' }} 1200w,
+                                      {{ slide_image | img_url: '1600x1067' }} 1600w"
+                              sizes="100vw">
+                      <img src="{{ slide_image | img_url: '1600x1067' }}" 
+                           srcset="{{ slide_image | img_url: '1200x800' }} 1200w,
+                                   {{ slide_image | img_url: '1600x1067' }} 1600w,
+                                   {{ slide_image | img_url: '2000x1333' }} 2000w"
+                           sizes="100vw"
+                           alt="{{ slide_title | escape }}"
+                           class="arvidsson-promotion__slide-image arvidsson-promotion__slide-image--{{ slide_image_position }}"
+                           loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+                    </picture>
+                  {% else %}
+                    <!-- Placeholder -->
+                    <div class="arvidsson-promotion__slide-placeholder">
+                      <svg class="arvidsson-promotion__slide-placeholder-icon" viewBox="0 0 24 24" fill="none">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="2"/>
+                        <polyline points="21,15 16,10 5,21" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                    </div>
+                  {% endif %}
+                  
+                  <!-- Overlay -->
+                  {% if slide_overlay_opacity > 0 %}
+                    <div class="arvidsson-promotion__slide-overlay" style="opacity: {{ slide_overlay_opacity }};"></div>
+                  {% endif %}
+                </div>
+                
+                <!-- Slide Content -->
+                <div class="arvidsson-promotion__slide-content">
+                  <div class="arvidsson-promotion__slide-content-inner">
+                    
+                    {% if slide_subtitle and slide_subtitle != blank %}
+                      <div class="arvidsson-promotion__slide-subtitle">{{ slide_subtitle }}</div>
+                    {% endif %}
+                    
+                    {% if slide_title and slide_title != blank %}
+                      <h3 class="arvidsson-promotion__slide-title">{{ slide_title }}</h3>
+                    {% endif %}
+                    
+                    {% if slide_description and slide_description != blank %}
+                      <p class="arvidsson-promotion__slide-description">{{ slide_description }}</p>
+                    {% endif %}
+                    
+                    {% if slide_button_text or slide_secondary_button_text %}
+                      <div class="arvidsson-promotion__slide-actions">
+                        {% if slide_button_text and slide_button_text != blank and slide_button_url and slide_button_url != blank %}
+                          <a href="{{ slide_button_url }}" class="btn btn--large arvidsson-promotion__slide-cta">
+                            {{ slide_button_text }}
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                              <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                          </a>
+                        {% endif %}
+                        
+                        {% if slide_secondary_button_text and slide_secondary_button_text != blank and slide_secondary_button_url and slide_secondary_button_url != blank %}
+                          <a href="{{ slide_secondary_button_url }}" class="btn btn--secondary btn--large arvidsson-promotion__slide-secondary-cta">
+                            {{ slide_secondary_button_text }}
+                          </a>
+                        {% endif %}
+                      </div>
+                    {% endif %}
+                    
+                  </div>
+                </div>
+                
+              </div>
+              
+          {% endcase %}
+        {% endfor %}
+        
+      </div>
+      
+      <!-- Pagination -->
+      {% if show_pagination and section.blocks.size > 1 %}
+        <div class="arvidsson-promotion__pagination" data-promotion-pagination>
+          {% for block in section.blocks %}
+            <button class="arvidsson-promotion__pagination-dot {% if forloop.first %}active{% endif %}" 
+                    data-slide-index="{{ forloop.index0 }}"
+                    aria-label="Gå till kampanj {{ forloop.index }}">
+            </button>
+          {% endfor %}
+        </div>
+      {% endif %}
+      
+      <!-- Progress Bar (for autoplay) -->
+      {% if autoplay %}
+        <div class="arvidsson-promotion__progress">
+          <div class="arvidsson-promotion__progress-bar" data-promotion-progress></div>
+        </div>
+      {% endif %}
+      
+    </div>
+    
+  </div>
+  
+</section>
+
+{% schema %}
+{
+  "name": "Promotion Carousel",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Upptäck våra kampanjer"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Exklusiva erbjudanden och begränsade kollektioner"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout_style",
+      "label": "Layout Style",
+      "options": [
+        {
+          "value": "carousel",
+          "label": "Carousel"
+        },
+        {
+          "value": "grid",
+          "label": "Grid"
+        },
+        {
+          "value": "masonry",
+          "label": "Masonry"
+        }
+      ],
+      "default": "carousel"
+    },
+    {
+      "type": "select",
+      "id": "background_color",
+      "label": "Background Color",
+      "options": [
+        {
+          "value": "white",
+          "label": "White"
+        },
+        {
+          "value": "light",
+          "label": "Light Gray"
+        },
+        {
+          "value": "primary",
+          "label": "Primary Color"
+        }
+      ],
+      "default": "light"
+    },
+    {
+      "type": "header",
+      "content": "Carousel Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "slide_duration",
+      "label": "Slide duration (ms)",
+      "min": 3000,
+      "max": 10000,
+      "step": 500,
+      "default": 5000
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show pagination dots",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "promotion_slide",
+      "name": "Promotion Slide",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Media"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Background Image"
+        },
+        {
+          "type": "select",
+          "id": "image_position",
+          "label": "Image Position",
+          "options": [
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "top",
+              "label": "Top"
+            },
+            {
+              "value": "bottom",
+              "label": "Bottom"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "label": "Overlay Opacity",
+          "min": 0,
+          "max": 0.8,
+          "step": 0.1,
+          "default": 0.4
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Primary Button Text"
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "Primary Button URL"
+        },
+        {
+          "type": "text",
+          "id": "secondary_button_text",
+          "label": "Secondary Button Text"
+        },
+        {
+          "type": "url",
+          "id": "secondary_button_url",
+          "label": "Secondary Button URL"
+        },
+        {
+          "type": "header",
+          "content": "Styling"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "text_color",
+          "label": "Text Color",
+          "options": [
+            {
+              "value": "white",
+              "label": "White"
+            },
+            {
+              "value": "dark",
+              "label": "Dark"
+            }
+          ],
+          "default": "white"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promotion Carousel",
+      "blocks": [
+        {
+          "type": "promotion_slide",
+          "settings": {
+            "title": "Sommarkampanj",
+            "subtitle": "Upp till 50% rabatt",
+            "description": "Upptäck våra bästa erbjudanden på utvald inredning för sommaren",
+            "button_text": "Handla nu",
+            "button_url": "/collections/sale"
+          }
+        },
+        {
+          "type": "promotion_slide",
+          "settings": {
+            "title": "Ny kollektion",
+            "subtitle": "Skandinavisk design",
+            "description": "Tidlös elegans och funktionalitet för ditt hem",
+            "button_text": "Utforska",
+            "button_url": "/collections/new"
+          }
+        },
+        {
+          "type": "promotion_slide",
+          "settings": {
+            "title": "Fri frakt",
+            "subtitle": "På alla beställningar över 999 kr",
+            "description": "Ingen frakt att betala - bara ren design levererat hem till dig",
+            "button_text": "Börja handla",
+            "button_url": "/collections/all"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

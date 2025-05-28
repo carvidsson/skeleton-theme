@@ -1,0 +1,248 @@
+{% comment %}
+  Arvidsson Hero Module
+  Full-width hero section with image/video background
+{% endcomment %}
+
+{% assign hero_image = section.settings.hero_image | default: 'hero-placeholder.jpg' %}
+{% assign hero_video = section.settings.hero_video %}
+{% assign hero_title = section.settings.hero_title | default: 'Välkommen till Arvidsson' %}
+{% assign hero_subtitle = section.settings.hero_subtitle | default: 'Upptäck vårt skandinaviska sortiment av möbler och inredning' %}
+{% assign hero_description = section.settings.hero_description | default: 'Skapa ditt drömhem med våra noggrant utvalda produkter som kombinerar funktionalitet med tidlös design.' %}
+{% assign hero_button_text = section.settings.hero_button_text | default: 'Handla nu' %}
+{% assign hero_button_url = section.settings.hero_button_url | default: collections.all.url %}
+{% assign hero_height = section.settings.hero_height | default: 'medium' %}
+{% assign hero_overlay = section.settings.hero_overlay | default: 0.3 %}
+{% assign hero_text_alignment = section.settings.hero_text_alignment | default: 'left' %}
+
+<section class="arvidsson-hero arvidsson-hero--{{ hero_height }} arvidsson-hero--{{ hero_text_alignment }}" 
+         id="hero-{{ section.id }}"
+         data-section-id="{{ section.id }}"
+         data-section-type="hero">
+  
+  <!-- Background Media -->
+  <div class="arvidsson-hero__media">
+    {% if hero_video and hero_video != blank %}
+      <!-- Video Background -->
+      <div class="arvidsson-hero__video-wrapper">
+        <video class="arvidsson-hero__video" 
+               autoplay 
+               muted 
+               loop 
+               playsinline
+               poster="{{ hero_image | img_url: '1920x1080' }}">
+          <source src="{{ hero_video }}" type="video/mp4">
+          <!-- Fallback image if video fails -->
+          <img src="{{ hero_image | img_url: '1920x1080' }}" 
+               alt="{{ hero_title | escape }}"
+               class="arvidsson-hero__fallback-image">
+        </video>
+      </div>
+    {% else %}
+      <!-- Image Background -->
+      <div class="arvidsson-hero__image-wrapper">
+        {% if hero_image %}
+          <picture class="arvidsson-hero__picture">
+            <source media="(max-width: 767px)" 
+                    srcset="{{ hero_image | img_url: '800x600' }} 800w,
+                            {{ hero_image | img_url: '1200x900' }} 1200w"
+                    sizes="100vw">
+            <source media="(max-width: 1023px)" 
+                    srcset="{{ hero_image | img_url: '1200x675' }} 1200w,
+                            {{ hero_image | img_url: '1600x900' }} 1600w"
+                    sizes="100vw">
+            <img src="{{ hero_image | img_url: '1920x1080' }}" 
+                 srcset="{{ hero_image | img_url: '1600x900' }} 1600w,
+                         {{ hero_image | img_url: '1920x1080' }} 1920w,
+                         {{ hero_image | img_url: '2400x1350' }} 2400w"
+                 sizes="100vw"
+                 alt="{{ hero_title | escape }}"
+                 class="arvidsson-hero__image"
+                 loading="eager">
+          </picture>
+        {% else %}
+          <!-- Placeholder when no image is set -->
+          <div class="arvidsson-hero__placeholder">
+            <svg class="arvidsson-hero__placeholder-icon" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="2"/>
+              <polyline points="21,15 16,10 5,21" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+    
+    <!-- Overlay -->
+    {% if hero_overlay > 0 %}
+      <div class="arvidsson-hero__overlay" style="opacity: {{ hero_overlay }};"></div>
+    {% endif %}
+  </div>
+  
+  <!-- Content -->
+  <div class="arvidsson-hero__container">
+    <div class="arvidsson-hero__content">
+      
+      {% if hero_subtitle and hero_subtitle != blank %}
+        <div class="arvidsson-hero__subtitle">{{ hero_subtitle }}</div>
+      {% endif %}
+      
+      {% if hero_title and hero_title != blank %}
+        <h1 class="arvidsson-hero__title">{{ hero_title }}</h1>
+      {% endif %}
+      
+      {% if hero_description and hero_description != blank %}
+        <p class="arvidsson-hero__description">{{ hero_description }}</p>
+      {% endif %}
+      
+      {% if hero_button_text and hero_button_text != blank and hero_button_url and hero_button_url != blank %}
+        <div class="arvidsson-hero__actions">
+          <a href="{{ hero_button_url }}" class="btn btn--large arvidsson-hero__cta">
+            {{ hero_button_text }}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      {% endif %}
+      
+    </div>
+  </div>
+  
+  <!-- Scroll Indicator (optional) -->
+  {% if section.settings.show_scroll_indicator %}
+    <div class="arvidsson-hero__scroll-indicator">
+      <button class="arvidsson-hero__scroll-btn" aria-label="Skrolla ner">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M7 13l5 5 5-5M7 6l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  {% endif %}
+  
+</section>
+
+{% schema %}
+{
+  "name": "Hero Banner",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "url",
+      "id": "hero_video",
+      "label": "Background Video URL",
+      "info": "MP4 format recommended. Will fallback to image if video fails to load."
+    },
+    {
+      "type": "range",
+      "id": "hero_overlay",
+      "label": "Overlay Opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.3
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "hero_subtitle",
+      "label": "Subtitle",
+      "default": "Upptäck vårt skandinaviska sortiment"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Heading",
+      "default": "Välkommen till Arvidsson"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_description",
+      "label": "Description",
+      "default": "Skapa ditt drömhem med våra noggrant utvalda produkter som kombinerar funktionalitet med tidlös design."
+    },
+    {
+      "type": "text",
+      "id": "hero_button_text",
+      "label": "Button Text",
+      "default": "Handla nu"
+    },
+    {
+      "type": "url",
+      "id": "hero_button_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "hero_height",
+      "label": "Section Height",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small (50vh)"
+        },
+        {
+          "value": "medium",
+          "label": "Medium (70vh)"
+        },
+        {
+          "value": "large",
+          "label": "Large (90vh)"
+        },
+        {
+          "value": "full",
+          "label": "Full Screen (100vh)"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "hero_text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scroll_indicator",
+      "label": "Show Scroll Indicator",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner"
+    }
+  ]
+}
+{% endschema %}

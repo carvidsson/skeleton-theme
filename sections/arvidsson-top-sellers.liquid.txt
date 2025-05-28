@@ -1,0 +1,311 @@
+{% comment %}
+  Arvidsson Top Sellers Module
+  Horizontally scrolling popular products list with images and details
+{% endcomment %}
+
+{% assign section_heading = section.settings.heading | default: 'Populära produkter' %}
+{% assign section_subheading = section.settings.subheading | default: 'Våra mest älskade produkter' %}
+{% assign products_to_show = section.settings.products_to_show | default: 8 %}
+{% assign show_vendor = section.settings.show_vendor | default: true %}
+{% assign show_rating = section.settings.show_rating | default: true %}
+{% assign card_style = section.settings.card_style | default: 'compact' %}
+{% assign collection_handle = section.settings.collection | default: 'frontpage' %}
+
+<section class="arvidsson-top-sellers arvidsson-top-sellers--{{ card_style }} section" 
+         id="top-sellers-{{ section.id }}"
+         data-section-id="{{ section.id }}"
+         data-section-type="top-sellers">
+  
+  <div class="container">
+    
+    <!-- Section Header -->
+    <div class="arvidsson-top-sellers__header">
+      {% if section_subheading and section_subheading != blank %}
+        <p class="arvidsson-top-sellers__subheading">{{ section_subheading }}</p>
+      {% endif %}
+      
+      {% if section_heading and section_heading != blank %}
+        <h2 class="arvidsson-top-sellers__heading">{{ section_heading }}</h2>
+      {% endif %}
+      
+      <!-- Navigation -->
+      <div class="arvidsson-top-sellers__nav">
+        <button class="arvidsson-top-sellers__nav-btn arvidsson-top-sellers__nav-btn--prev" 
+                aria-label="Föregående produkter"
+                data-top-sellers-prev>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="arvidsson-top-sellers__nav-btn arvidsson-top-sellers__nav-btn--next" 
+                aria-label="Nästa produkter"
+                data-top-sellers-next>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Products Carousel -->
+    <div class="arvidsson-top-sellers__container">
+      <div class="arvidsson-top-sellers__track" data-top-sellers-track>
+        
+        {% assign target_collection = collections[collection_handle] %}
+        {% if target_collection.products.size > 0 %}
+          
+          {% for product in target_collection.products limit: products_to_show %}
+            
+            <div class="arvidsson-top-sellers__item" data-product-id="{{ product.id }}">
+              <article class="arvidsson-top-seller-card" itemscope itemtype="http://schema.org/Product">
+                
+                <!-- Product Image -->
+                <div class="arvidsson-top-seller-card__media">
+                  <a href="{{ product.url }}" class="arvidsson-top-seller-card__link" aria-label="Visa {{ product.title }}">
+                    
+                    {% if product.featured_media %}
+                      <img src="{{ product.featured_media | img_url: '400x400' }}"
+                           srcset="{{ product.featured_media | img_url: '300x300' }} 300w,
+                                   {{ product.featured_media | img_url: '400x400' }} 400w,
+                                   {{ product.featured_media | img_url: '500x500' }} 500w"
+                           sizes="(max-width: 767px) 150px, 200px"
+                           alt="{{ product.featured_media.alt | escape }}"
+                           class="arvidsson-top-seller-card__image"
+                           loading="lazy"
+                           itemprop="image">
+                    {% else %}
+                      <div class="arvidsson-top-seller-card__placeholder">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                          <circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="2"/>
+                          <polyline points="21,15 16,10 5,21" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                      </div>
+                    {% endif %}
+                    
+                    <!-- Product Badges -->
+                    <div class="arvidsson-top-seller-card__badges">
+                      {% if product.available == false %}
+                        <span class="arvidsson-top-seller-card__badge arvidsson-top-seller-card__badge--sold-out">Slutsåld</span>
+                      {% elsif product.compare_at_price > product.price %}
+                        {% assign discount_percentage = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price %}
+                        <span class="arvidsson-top-seller-card__badge arvidsson-top-seller-card__badge--sale">-{{ discount_percentage }}%</span>
+                      {% endif %}
+                      {% if product.tags contains 'bestseller' or forloop.index <= 3 %}
+                        <span class="arvidsson-top-seller-card__badge arvidsson-top-seller-card__badge--bestseller">#{{ forloop.index }}</span>
+                      {% endif %}
+                    </div>
+                    
+                  </a>
+                  
+                  <!-- Quick Actions -->
+                  <div class="arvidsson-top-seller-card__actions">
+                    
+                    <!-- Wishlist -->
+                    <button class="arvidsson-top-seller-card__action arvidsson-top-seller-card__wishlist" 
+                            data-product-id="{{ product.id }}" 
+                            aria-label="Lägg till i önskelista">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                    </button>
+                    
+                    <!-- Quick Add to Cart (if single variant) -->
+                    {% if product.variants.size == 1 and product.available %}
+                      <button class="arvidsson-top-seller-card__action arvidsson-top-seller-card__add-to-cart" 
+                              data-product-id="{{ product.id }}"
+                              data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                              aria-label="Lägg i kundvagn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                          <path d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z" fill="currentColor"/>
+                          <path d="M20 22C20.5523 22 21 21.5523 21 21C21 20.4477 20.5523 20 20 20C19.4477 20 19 20.4477 19 21C19 21.5523 19.4477 22 20 22Z" fill="currentColor"/>
+                          <path d="M1 1H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                      </button>
+                    {% endif %}
+                    
+                  </div>
+                  
+                </div>
+                
+                <!-- Product Info -->
+                <div class="arvidsson-top-seller-card__content">
+                  
+                  {% if show_vendor and product.vendor %}
+                    <div class="arvidsson-top-seller-card__vendor" itemprop="brand">{{ product.vendor }}</div>
+                  {% endif %}
+                  
+                  <h3 class="arvidsson-top-seller-card__title" itemprop="name">
+                    <a href="{{ product.url }}">{{ product.title }}</a>
+                  </h3>
+                  
+                  {% if show_rating and product.metafields.reviews.rating.value %}
+                    <div class="arvidsson-top-seller-card__rating">
+                      <div class="arvidsson-top-seller-card__stars" data-rating="{{ product.metafields.reviews.rating.value }}">
+                        {% for i in (1..5) %}
+                          <svg class="arvidsson-top-seller-card__star" viewBox="0 0 24 24" fill="none">
+                            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" stroke="currentColor" stroke-width="2"/>
+                          </svg>
+                        {% endfor %}
+                      </div>
+                      <span class="arvidsson-top-seller-card__rating-count">
+                        ({{ product.metafields.reviews.rating_count.value | default: 0 }})
+                      </span>
+                    </div>
+                  {% endif %}
+                  
+                  <!-- Price -->
+                  <div class="arvidsson-top-seller-card__price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                    <meta itemprop="priceCurrency" content="{{ cart.currency.iso_code }}">
+                    <meta itemprop="availability" content="{% if product.available %}InStock{% else %}OutOfStock{% endif %}">
+                    
+                    {% if product.compare_at_price > product.price %}
+                      <span class="arvidsson-top-seller-card__price-compare">{{ product.compare_at_price | money }}</span>
+                    {% endif %}
+                    <span class="arvidsson-top-seller-card__price-current" itemprop="price" content="{{ product.price | divided_by: 100.0 }}">
+                      {{ product.price | money }}
+                    </span>
+                    {% if product.price_varies %}
+                      <span class="arvidsson-top-seller-card__price-from">från</span>
+                    {% endif %}
+                  </div>
+                  
+                </div>
+                
+              </article>
+            </div>
+            
+          {% endfor %}
+          
+        {% else %}
+          
+          <!-- Empty State -->
+          {% for i in (1..products_to_show) %}
+            <div class="arvidsson-top-sellers__item arvidsson-top-sellers__item--empty">
+              <div class="arvidsson-top-seller-card__placeholder">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                  <circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="2"/>
+                  <polyline points="21,15 16,10 5,21" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <p>Produkt {{ i }}</p>
+              </div>
+            </div>
+          {% endfor %}
+          
+        {% endif %}
+        
+      </div>
+    </div>
+    
+    <!-- View All Button -->
+    {% if section.settings.show_view_all and target_collection %}
+      <div class="arvidsson-top-sellers__footer text-center">
+        <a href="{{ target_collection.url }}" class="btn btn--secondary">
+          Visa alla populära produkter
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    {% endif %}
+    
+  </div>
+  
+</section>
+
+{% schema %}
+{
+  "name": "Top Sellers",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Populära produkter"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Våra mest älskade produkter"
+    },
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Products to show as top sellers"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "card_style",
+      "label": "Card Style",
+      "options": [
+        {
+          "value": "compact",
+          "label": "Compact"
+        },
+        {
+          "value": "detailed",
+          "label": "Detailed"
+        },
+        {
+          "value": "minimal",
+          "label": "Minimal"
+        }
+      ],
+      "default": "compact"
+    },
+    {
+      "type": "header",
+      "content": "Product Information"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show product vendor",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show product rating",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "View All"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show view all button",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Top Sellers"
+    }
+  ]
+}
+{% endschema %}

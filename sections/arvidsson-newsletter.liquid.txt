@@ -1,0 +1,310 @@
+{% comment %}
+  Arvidsson Newsletter Module
+  Email subscription with form validation
+{% endcomment %}
+
+{% assign newsletter_heading = section.settings.heading | default: 'Håll dig uppdaterad' %}
+{% assign newsletter_subheading = section.settings.subheading | default: 'Få de senaste nyheterna, erbjudandena och inspirationen direkt i din inkorg' %}
+{% assign newsletter_placeholder = section.settings.placeholder_text | default: 'Din e-postadress' %}
+{% assign newsletter_button_text = section.settings.button_text | default: 'Prenumerera' %}
+{% assign success_message = section.settings.success_message | default: 'Tack! Du har nu registrerat dig för vårt nyhetsbrev.' %}
+{% assign privacy_text = section.settings.privacy_text | default: 'Genom att prenumerera godkänner du våra villkor och integritetspolicy.' %}
+{% assign show_privacy_text = section.settings.show_privacy_text | default: true %}
+{% assign background_color = section.settings.background_color | default: 'light' %}
+{% assign text_alignment = section.settings.text_alignment | default: 'center' %}
+
+<section class="arvidsson-newsletter arvidsson-newsletter--{{ background_color }} arvidsson-newsletter--{{ text_alignment }} section" 
+         id="newsletter-{{ section.id }}"
+         data-section-id="{{ section.id }}"
+         data-section-type="newsletter">
+  
+  <div class="container">
+    
+    <div class="arvidsson-newsletter__container">
+      
+      <!-- Newsletter Header -->
+      <div class="arvidsson-newsletter__header">
+        
+        {% if newsletter_subheading and newsletter_subheading != blank %}
+          <p class="arvidsson-newsletter__subheading">{{ newsletter_subheading }}</p>
+        {% endif %}
+        
+        {% if newsletter_heading and newsletter_heading != blank %}
+          <h2 class="arvidsson-newsletter__heading">{{ newsletter_heading }}</h2>
+        {% endif %}
+        
+      </div>
+      
+      <!-- Newsletter Form -->
+      <div class="arvidsson-newsletter__form-wrapper">
+        
+        <!-- Success Message (Initially Hidden) -->
+        <div class="arvidsson-newsletter__success" id="newsletter-success-{{ section.id }}" style="display: none;">
+          <div class="arvidsson-newsletter__success-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+              <polyline points="16,10 10,16 8,14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <p class="arvidsson-newsletter__success-message">{{ success_message }}</p>
+        </div>
+        
+        <!-- Newsletter Form -->
+        <form class="arvidsson-newsletter__form" 
+              id="newsletter-form-{{ section.id }}"
+              action="{{ routes.root_url }}contact" 
+              method="post" 
+              accept-charset="UTF-8"
+              data-newsletter-form>
+          
+          <!-- Shopify Form Requirements -->
+          <input type="hidden" name="form_type" value="customer">
+          <input type="hidden" name="utf8" value="✓">
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          
+          <div class="arvidsson-newsletter__input-group">
+            
+            <!-- Email Input -->
+            <div class="arvidsson-newsletter__input-wrapper">
+              <label for="newsletter-email-{{ section.id }}" class="visually-hidden">E-postadress</label>
+              <input type="email" 
+                     id="newsletter-email-{{ section.id }}"
+                     name="contact[email]" 
+                     placeholder="{{ newsletter_placeholder }}"
+                     class="arvidsson-newsletter__input"
+                     required
+                     aria-describedby="newsletter-error-{{ section.id }}">
+              
+              <!-- Email Validation Icon -->
+              <div class="arvidsson-newsletter__input-icon">
+                <svg class="arvidsson-newsletter__icon-email" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="2"/>
+                  <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <svg class="arvidsson-newsletter__icon-check" width="20" height="20" viewBox="0 0 24 24" fill="none" style="display: none;">
+                  <polyline points="20,6 9,17 4,12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+            
+            <!-- Submit Button -->
+            <button type="submit" class="btn arvidsson-newsletter__submit" aria-describedby="newsletter-loading-{{ section.id }}">
+              <span class="arvidsson-newsletter__submit-text">{{ newsletter_button_text }}</span>
+              <span class="arvidsson-newsletter__submit-loading" style="display: none;">
+                <svg class="arvidsson-newsletter__loader" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" opacity="0.3"/>
+                  <path d="M2 12a10 10 0 0 1 10-10" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <animateTransform attributeName="transform" type="rotate" values="0 12 12;360 12 12" dur="1s" repeatCount="indefinite"/>
+                  </path>
+                </svg>
+                Registrerar...
+              </span>
+              <svg class="arvidsson-newsletter__submit-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            
+          </div>
+          
+          <!-- Error Message -->
+          <div class="arvidsson-newsletter__error" id="newsletter-error-{{ section.id }}" role="alert" style="display: none;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+              <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span class="arvidsson-newsletter__error-text"></span>
+          </div>
+          
+          <!-- Privacy Text -->
+          {% if show_privacy_text and privacy_text and privacy_text != blank %}
+            <p class="arvidsson-newsletter__privacy">{{ privacy_text }}</p>
+          {% endif %}
+          
+        </form>
+        
+      </div>
+      
+      <!-- Additional Benefits (Optional) -->
+      {% if section.settings.show_benefits %}
+        <div class="arvidsson-newsletter__benefits">
+          <ul class="arvidsson-newsletter__benefits-list">
+            {% for block in section.blocks %}
+              {% case block.type %}
+                {% when 'benefit' %}
+                  <li class="arvidsson-newsletter__benefit" {{ block.shopify_attributes }}>
+                    {% if block.settings.icon %}
+                      <div class="arvidsson-newsletter__benefit-icon">
+                        {{ block.settings.icon }}
+                      </div>
+                    {% endif %}
+                    <span class="arvidsson-newsletter__benefit-text">{{ block.settings.text }}</span>
+                  </li>
+              {% endcase %}
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+      
+    </div>
+    
+  </div>
+  
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter Signup",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Håll dig uppdaterad"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading", 
+      "label": "Subheading",
+      "default": "Få de senaste nyheterna, erbjudandena och inspirationen direkt i din inkorg"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_text",
+      "label": "Email placeholder text",
+      "default": "Din e-postadress"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Prenumerera"
+    },
+    {
+      "type": "textarea",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Tack! Du har nu registrerat dig för vårt nyhetsbrev."
+    },
+    {
+      "type": "header",
+      "content": "Privacy"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_privacy_text",
+      "label": "Show privacy text",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "privacy_text",
+      "label": "Privacy text",
+      "default": "Genom att prenumerera godkänner du våra villkor och integritetspolicy."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "background_color",
+      "label": "Background",
+      "options": [
+        {
+          "value": "white",
+          "label": "White"
+        },
+        {
+          "value": "light",
+          "label": "Light Gray"
+        },
+        {
+          "value": "primary",
+          "label": "Primary Color"
+        }
+      ],
+      "default": "light"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_benefits",
+      "label": "Show benefits list",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "html",
+          "id": "icon",
+          "label": "Icon SVG",
+          "info": "Add your SVG icon code here"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Benefit text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter Signup",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M22 11.08V12a10 10 0 1 1-5.93-9.14\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polyline points=\"22,4 12,14.01 9,11.01\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+            "text": "Exklusiva erbjudanden"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M13 2L3 14h9l-1 8 10-12h-9l1-8z\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+            "text": "Första att veta om nyheter"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+            "text": "Inredningsinsipration"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

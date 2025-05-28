@@ -1,0 +1,332 @@
+{% comment %}
+  Arvidsson Shop by Room Module
+  Category navigation with room-based collections
+{% endcomment %}
+
+{% assign section_heading = section.settings.heading | default: 'Handla efter rum' %}
+{% assign section_subheading = section.settings.subheading | default: 'Upptäck våra kurerade kollektioner för varje rum i ditt hem' %}
+{% assign layout_style = section.settings.layout_style | default: 'grid' %}
+{% assign show_product_count = section.settings.show_product_count | default: true %}
+
+<section class="arvidsson-shop-by-room section" 
+         id="shop-by-room-{{ section.id }}"
+         data-section-id="{{ section.id }}"
+         data-section-type="shop-by-room">
+  
+  <div class="container">
+    
+    <!-- Section Header -->
+    <div class="arvidsson-shop-by-room__header text-center">
+      {% if section_subheading and section_subheading != blank %}
+        <p class="arvidsson-shop-by-room__subheading">{{ section_subheading }}</p>
+      {% endif %}
+      
+      {% if section_heading and section_heading != blank %}
+        <h2 class="arvidsson-shop-by-room__heading">{{ section_heading }}</h2>
+      {% endif %}
+    </div>
+    
+    <!-- Room Categories -->
+    <div class="arvidsson-shop-by-room__grid arvidsson-shop-by-room__grid--{{ layout_style }}">
+      
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'room_category' %}
+            {% assign room_collection = collections[block.settings.collection] %}
+            {% assign room_image = block.settings.image %}
+            {% assign room_title = block.settings.title | default: room_collection.title %}
+            {% assign room_description = block.settings.description | default: room_collection.description %}
+            {% assign room_url = block.settings.custom_url | default: room_collection.url %}
+            {% assign overlay_opacity = block.settings.overlay_opacity | default: 0.3 %}
+            {% assign text_color = block.settings.text_color | default: 'white' %}
+            
+            <div class="arvidsson-shop-by-room__item arvidsson-shop-by-room__item--{{ text_color }}" 
+                 {{ block.shopify_attributes }}
+                 data-room="{{ room_title | handle }}">
+              
+              <article class="arvidsson-room-card">
+                
+                <!-- Room Image -->
+                <div class="arvidsson-room-card__media">
+                  <a href="{{ room_url }}" class="arvidsson-room-card__link" aria-label="Handla {{ room_title }}">
+                    
+                    {% if room_image %}
+                      <picture class="arvidsson-room-card__picture">
+                        <source media="(max-width: 767px)" 
+                                srcset="{{ room_image | img_url: '600x400' }} 600w,
+                                        {{ room_image | img_url: '800x533' }} 800w"
+                                sizes="(max-width: 767px) 100vw, 50vw">
+                        <source media="(max-width: 1023px)" 
+                                srcset="{{ room_image | img_url: '800x533' }} 800w,
+                                        {{ room_image | img_url: '1200x800' }} 1200w"
+                                sizes="(max-width: 1023px) 50vw, 33vw">
+                        <img src="{{ room_image | img_url: '800x533' }}" 
+                             srcset="{{ room_image | img_url: '600x400' }} 600w,
+                                     {{ room_image | img_url: '800x533' }} 800w,
+                                     {{ room_image | img_url: '1200x800' }} 1200w"
+                             sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
+                             alt="{{ room_title | escape }}"
+                             class="arvidsson-room-card__image"
+                             loading="lazy">
+                      </picture>
+                    {% else %}
+                      <!-- Placeholder -->
+                      <div class="arvidsson-room-card__placeholder">
+                        <svg class="arvidsson-room-card__placeholder-icon" viewBox="0 0 24 24" fill="none">
+                          <path d="M3 9V21H21V9L12 2L3 9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </div>
+                    {% endif %}
+                    
+                    <!-- Overlay -->
+                    {% if overlay_opacity > 0 %}
+                      <div class="arvidsson-room-card__overlay" style="opacity: {{ overlay_opacity }};"></div>
+                    {% endif %}
+                    
+                  </a>
+                </div>
+                
+                <!-- Room Content -->
+                <div class="arvidsson-room-card__content">
+                  
+                  <div class="arvidsson-room-card__info">
+                    
+                    {% if room_title and room_title != blank %}
+                      <h3 class="arvidsson-room-card__title">
+                        <a href="{{ room_url }}">{{ room_title }}</a>
+                      </h3>
+                    {% endif %}
+                    
+                    {% if room_description and room_description != blank %}
+                      <p class="arvidsson-room-card__description">{{ room_description | truncate: 120 }}</p>
+                    {% endif %}
+                    
+                    {% if show_product_count and room_collection and room_collection.products_count > 0 %}
+                      <span class="arvidsson-room-card__count">{{ room_collection.products_count }} produkter</span>
+                    {% endif %}
+                    
+                  </div>
+                  
+                  <div class="arvidsson-room-card__action">
+                    <a href="{{ room_url }}" class="btn btn--secondary arvidsson-room-card__cta">
+                      <span>Utforska</span>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </a>
+                  </div>
+                  
+                </div>
+                
+              </article>
+              
+            </div>
+            
+        {% endcase %}
+      {% endfor %}
+      
+    </div>
+    
+    <!-- View All Button -->
+    {% if section.settings.show_view_all and section.settings.view_all_url %}
+      <div class="arvidsson-shop-by-room__footer text-center">
+        <a href="{{ section.settings.view_all_url }}" class="btn btn--large">
+          {{ section.settings.view_all_text | default: 'Visa alla kategorier' }}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    {% endif %}
+    
+  </div>
+  
+</section>
+
+{% schema %}
+{
+  "name": "Shop by Room",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Handla efter rum"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Upptäck våra kurerade kollektioner för varje rum i ditt hem"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout_style",
+      "label": "Layout Style",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Grid"
+        },
+        {
+          "value": "masonry",
+          "label": "Masonry"
+        },
+        {
+          "value": "carousel",
+          "label": "Carousel"
+        }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_count",
+      "label": "Show product count",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "View All Button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show view all button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View all button text",
+      "default": "Visa alla kategorier"
+    },
+    {
+      "type": "url",
+      "id": "view_all_url",
+      "label": "View all button URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "room_category",
+      "name": "Room Category",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Room Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Custom Title",
+          "info": "Leave blank to use collection title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Custom Description",
+          "info": "Leave blank to use collection description"
+        },
+        {
+          "type": "url",
+          "id": "custom_url",
+          "label": "Custom URL",
+          "info": "Leave blank to use collection URL"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "label": "Overlay Opacity",
+          "min": 0,
+          "max": 0.8,
+          "step": 0.1,
+          "default": 0.3
+        },
+        {
+          "type": "select",
+          "id": "text_color",
+          "label": "Text Color",
+          "options": [
+            {
+              "value": "white",
+              "label": "White"
+            },
+            {
+              "value": "dark",
+              "label": "Dark"
+            }
+          ],
+          "default": "white"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop by Room",
+      "blocks": [
+        {
+          "type": "room_category",
+          "settings": {
+            "title": "Vardagsrum",
+            "description": "Skapa en mysig och funktionell mötesplats för familj och vänner"
+          }
+        },
+        {
+          "type": "room_category",
+          "settings": {
+            "title": "Sovrum",
+            "description": "Din personliga oas för vila och återhämtning"
+          }
+        },
+        {
+          "type": "room_category",
+          "settings": {
+            "title": "Kök",
+            "description": "Hjärtat i hemmet där måltider skapas och minnen görs"
+          }
+        },
+        {
+          "type": "room_category",
+          "settings": {
+            "title": "Matrum",
+            "description": "Elegant miljö för gemensamma måltider och samvaro"
+          }
+        },
+        {
+          "type": "room_category",
+          "settings": {
+            "title": "Badrum",
+            "description": "Personlig spa-upplevelse i ditt eget hem"
+          }
+        },
+        {
+          "type": "room_category",
+          "settings": {
+            "title": "Arbetsrum",
+            "description": "Produktiv och inspirerande miljö för arbete och kreativitet"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

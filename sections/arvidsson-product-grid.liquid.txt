@@ -1,0 +1,429 @@
+{% comment %}
+  Arvidsson Product Grid Module
+  Displays products in a responsive grid with filtering capabilities
+{% endcomment %}
+
+{% assign products_per_page = section.settings.products_per_page | default: 12 %}
+{% assign grid_columns_desktop = section.settings.grid_columns_desktop | default: 4 %}
+{% assign grid_columns_tablet = section.settings.grid_columns_tablet | default: 3 %}
+{% assign grid_columns_mobile = section.settings.grid_columns_mobile | default: 2 %}
+{% assign show_vendor = section.settings.show_vendor | default: true %}
+{% assign show_rating = section.settings.show_rating | default: true %}
+{% assign show_compare = section.settings.show_compare | default: true %}
+{% assign show_quick_view = section.settings.show_quick_view | default: true %}
+{% assign image_ratio = section.settings.image_ratio | default: 'square' %}
+
+<section class="arvidsson-product-grid section" 
+         id="product-grid-{{ section.id }}"
+         data-section-id="{{ section.id }}"
+         data-section-type="product-grid">
+  
+  <div class="container">
+    
+    <!-- Grid Header -->
+    <div class="arvidsson-product-grid__header">
+      
+      <!-- Results Info -->
+      <div class="arvidsson-product-grid__results">
+        {% if collection %}
+          <span class="arvidsson-product-grid__count">
+            {{ paginate.current_offset | plus: 1 }}-{{ paginate.current_offset | plus: paginate.current_size }} av {{ collection.products_count }} produkter
+          </span>
+        {% elsif search.performed %}
+          <span class="arvidsson-product-grid__count">
+            {{ paginate.current_offset | plus: 1 }}-{{ paginate.current_offset | plus: paginate.current_size }} av {{ search.results_count }} resultat för "{{ search.terms }}"
+          </span>
+        {% endif %}
+      </div>
+      
+      <!-- Sort Options -->
+      <div class="arvidsson-product-grid__sort">
+        <label for="sort-by" class="arvidsson-product-grid__sort-label">Sortera:</label>
+        <select id="sort-by" class="arvidsson-product-grid__sort-select" data-sort-by>
+          {% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
+          <option value="manual" {% if sort_by == 'manual' %}selected{% endif %}>Utvalda</option>
+          <option value="best-selling" {% if sort_by == 'best-selling' %}selected{% endif %}>Bäst säljande</option>
+          <option value="title-ascending" {% if sort_by == 'title-ascending' %}selected{% endif %}>A-Ö</option>
+          <option value="title-descending" {% if sort_by == 'title-descending' %}selected{% endif %}>Ö-A</option>
+          <option value="price-ascending" {% if sort_by == 'price-ascending' %}selected{% endif %}>Pris: Låg till hög</option>
+          <option value="price-descending" {% if sort_by == 'price-descending' %}selected{% endif %}>Pris: Hög till låg</option>
+          <option value="created-descending" {% if sort_by == 'created-descending' %}selected{% endif %}>Nyast</option>
+        </select>
+      </div>
+      
+    </div>
+    
+    <!-- Loading State -->
+    <div class="arvidsson-product-grid__loading" id="grid-loading" style="display: none;">
+      <div class="arvidsson-product-grid__loader">
+        <div class="loader"></div>
+        <span>Laddar produkter...</span>
+      </div>
+    </div>
+    
+    <!-- Product Grid -->
+    <div class="arvidsson-product-grid__container" id="product-grid-container">
+      
+      {% paginate collection.products by products_per_page %}
+        
+        <div class="arvidsson-product-grid__grid" 
+             style="--grid-columns-desktop: {{ grid_columns_desktop }}; --grid-columns-tablet: {{ grid_columns_tablet }}; --grid-columns-mobile: {{ grid_columns_mobile }};">
+          
+          {% for product in collection.products %}
+            
+            <div class="arvidsson-product-grid__item" data-product-id="{{ product.id }}">
+              <article class="arvidsson-product-card" itemscope itemtype="http://schema.org/Product">
+                
+                <!-- Product Image -->
+                <div class="arvidsson-product-card__media arvidsson-product-card__media--{{ image_ratio }}">
+                  <a href="{{ product.url }}" class="arvidsson-product-card__link" aria-label="Visa {{ product.title }}">
+                    
+                    {% if product.featured_media %}
+                      <img src="{{ product.featured_media | img_url: '600x600' }}"
+                           srcset="{{ product.featured_media | img_url: '300x300' }} 300w,
+                                   {{ product.featured_media | img_url: '600x600' }} 600w,
+                                   {{ product.featured_media | img_url: '800x800' }} 800w"
+                           sizes="(max-width: 767px) calc(50vw - 32px), (max-width: 1023px) calc(33.333vw - 32px), calc(25vw - 32px)"
+                           alt="{{ product.featured_media.alt | escape }}"
+                           class="arvidsson-product-card__image arvidsson-product-card__image--primary"
+                           loading="lazy"
+                           itemprop="image">
+                      
+                      <!-- Hover Image -->
+                      {% if product.media[1] and section.settings.show_hover_image %}
+                        <img src="{{ product.media[1] | img_url: '600x600' }}"
+                             alt="{{ product.media[1].alt | escape }}"
+                             class="arvidsson-product-card__image arvidsson-product-card__image--hover"
+                             loading="lazy">
+                      {% endif %}
+                      
+                    {% else %}
+                      <div class="arvidsson-product-card__placeholder">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                          <circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="2"/>
+                          <polyline points="21,15 16,10 5,21" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                      </div>
+                    {% endif %}
+                    
+                    <!-- Product Badges -->
+                    <div class="arvidsson-product-card__badges">
+                      {% if product.available == false %}
+                        <span class="arvidsson-product-card__badge arvidsson-product-card__badge--sold-out">Slutsåld</span>
+                      {% elsif product.compare_at_price > product.price %}
+                        {% assign discount_percentage = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price %}
+                        <span class="arvidsson-product-card__badge arvidsson-product-card__badge--sale">-{{ discount_percentage }}%</span>
+                      {% endif %}
+                      {% if product.tags contains 'ny' or product.tags contains 'new' %}
+                        <span class="arvidsson-product-card__badge arvidsson-product-card__badge--new">Ny</span>
+                      {% endif %}
+                    </div>
+                    
+                  </a>
+                  
+                  <!-- Quick Actions -->
+                  <div class="arvidsson-product-card__actions">
+                    
+                    <!-- Wishlist -->
+                    <button class="arvidsson-product-card__action arvidsson-product-card__wishlist" 
+                            data-product-id="{{ product.id }}" 
+                            aria-label="Lägg till i önskelista">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                    </button>
+                    
+                    {% if show_compare %}
+                      <!-- Compare -->
+                      <button class="arvidsson-product-card__action arvidsson-product-card__compare" 
+                              data-product-id="{{ product.id }}" 
+                              aria-label="Jämför produkt">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                          <path d="M9 3v18M15 3v18M3 9l6-6M21 15l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </button>
+                    {% endif %}
+                    
+                    {% if show_quick_view %}
+                      <!-- Quick View -->
+                      <button class="arvidsson-product-card__action arvidsson-product-card__quick-view" 
+                              data-product-id="{{ product.id }}" 
+                              aria-label="Snabbtitt">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/>
+                          <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                      </button>
+                    {% endif %}
+                    
+                  </div>
+                  
+                </div>
+                
+                <!-- Product Info -->
+                <div class="arvidsson-product-card__content">
+                  
+                  {% if show_vendor and product.vendor %}
+                    <div class="arvidsson-product-card__vendor" itemprop="brand">{{ product.vendor }}</div>
+                  {% endif %}
+                  
+                  <h3 class="arvidsson-product-card__title" itemprop="name">
+                    <a href="{{ product.url }}">{{ product.title }}</a>
+                  </h3>
+                  
+                  {% if show_rating and product.metafields.reviews.rating.value %}
+                    <div class="arvidsson-product-card__rating">
+                      <div class="arvidsson-product-card__stars" data-rating="{{ product.metafields.reviews.rating.value }}">
+                        {% for i in (1..5) %}
+                          <svg class="arvidsson-product-card__star" viewBox="0 0 24 24" fill="none">
+                            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" stroke="currentColor" stroke-width="2"/>
+                          </svg>
+                        {% endfor %}
+                      </div>
+                      <span class="arvidsson-product-card__rating-count">
+                        ({{ product.metafields.reviews.rating_count.value | default: 0 }})
+                      </span>
+                    </div>
+                  {% endif %}
+                  
+                  <!-- Price -->
+                  <div class="arvidsson-product-card__price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                    <meta itemprop="priceCurrency" content="{{ cart.currency.iso_code }}">
+                    <meta itemprop="availability" content="{% if product.available %}InStock{% else %}OutOfStock{% endif %}">
+                    
+                    {% if product.compare_at_price > product.price %}
+                      <span class="arvidsson-product-card__price-compare">{{ product.compare_at_price | money }}</span>
+                    {% endif %}
+                    <span class="arvidsson-product-card__price-current" itemprop="price" content="{{ product.price | divided_by: 100.0 }}">
+                      {{ product.price | money }}
+                    </span>
+                    {% if product.price_varies %}
+                      <span class="arvidsson-product-card__price-from">från</span>
+                    {% endif %}
+                  </div>
+                  
+                  <!-- Variants (if needed) -->
+                  {% if product.variants.size > 1 and section.settings.show_variants %}
+                    <div class="arvidsson-product-card__variants">
+                      {% for variant in product.variants limit: 4 %}
+                        {% if variant.featured_media %}
+                          <button class="arvidsson-product-card__variant" 
+                                  data-variant-id="{{ variant.id }}"
+                                  data-variant-image="{{ variant.featured_media | img_url: '600x600' }}"
+                                  style="background-image: url('{{ variant.featured_media | img_url: '50x50' }}');"
+                                  aria-label="{{ variant.title }}">
+                          </button>
+                        {% endif %}
+                      {% endfor %}
+                      {% if product.variants.size > 4 %}
+                        <span class="arvidsson-product-card__variant-more">+{{ product.variants.size | minus: 4 }}</span>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                  
+                </div>
+                
+                <!-- Add to Cart (if single variant) -->
+                {% if product.variants.size == 1 and product.available %}
+                  <div class="arvidsson-product-card__cart">
+                    <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" class="arvidsson-product-card__form">
+                      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                      <button type="submit" class="btn btn--secondary arvidsson-product-card__add-to-cart" aria-describedby="cart-{{ product.id }}">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                          <path d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z" fill="currentColor"/>
+                          <path d="M20 22C20.5523 22 21 21.5523 21 21C21 20.4477 20.5523 20 20 20C19.4477 20 19 20.4477 19 21C19 21.5523 19.4477 22 20 22Z" fill="currentColor"/>
+                          <path d="M1 1H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </svg>
+                        <span>Lägg i kundvagn</span>
+                      </button>
+                    </form>
+                  </div>
+                {% endif %}
+                
+              </article>
+            </div>
+            
+          {% else %}
+            
+            <!-- Empty State -->
+            <div class="arvidsson-product-grid__empty">
+              <svg class="arvidsson-product-grid__empty-icon" viewBox="0 0 24 24" fill="none">
+                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <h3>Inga produkter hittades</h3>
+              <p>Inga produkter matchar dina filterkriterier. Försök justera dina filter eller <a href="{{ collection.url }}">rensa alla filter</a>.</p>
+            </div>
+            
+          {% endfor %}
+          
+        </div>
+        
+        <!-- Pagination -->
+        {% if paginate.pages > 1 %}
+          <nav class="arvidsson-product-grid__pagination" aria-label="Sidnavigering">
+            <ul class="arvidsson-product-grid__pagination-list">
+              
+              {% if paginate.previous %}
+                <li class="arvidsson-product-grid__pagination-item">
+                  <a href="{{ paginate.previous.url }}" class="arvidsson-product-grid__pagination-link" aria-label="Föregående sida">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                      <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                </li>
+              {% endif %}
+              
+              {% for part in paginate.parts %}
+                {% if part.is_link %}
+                  <li class="arvidsson-product-grid__pagination-item">
+                    <a href="{{ part.url }}" class="arvidsson-product-grid__pagination-link">{{ part.title }}</a>
+                  </li>
+                {% else %}
+                  <li class="arvidsson-product-grid__pagination-item">
+                    <span class="arvidsson-product-grid__pagination-current">{{ part.title }}</span>
+                  </li>
+                {% endif %}
+              {% endfor %}
+              
+              {% if paginate.next %}
+                <li class="arvidsson-product-grid__pagination-item">
+                  <a href="{{ paginate.next.url }}" class="arvidsson-product-grid__pagination-link" aria-label="Nästa sida">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                      <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                </li>
+              {% endif %}
+              
+            </ul>
+          </nav>
+        {% endif %}
+        
+      {% endpaginate %}
+      
+    </div>
+    
+  </div>
+  
+</section>
+
+{% schema %}
+{
+  "name": "Product Grid",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Grid Layout"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 8,
+      "max": 50,
+      "step": 2,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "grid_columns_desktop",
+      "label": "Desktop columns",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "grid_columns_tablet",
+      "label": "Tablet columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "grid_columns_mobile",
+      "label": "Mobile columns",
+      "min": 1,
+      "max": 2,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image Ratio",
+      "options": [
+        {
+          "value": "natural",
+          "label": "Natural"
+        },
+        {
+          "value": "square",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait (3:4)"
+        },
+        {
+          "value": "landscape",
+          "label": "Landscape (4:3)"
+        }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "header",
+      "content": "Product Card Features"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show product vendor",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show product rating",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_compare",
+      "label": "Show compare button",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_view",
+      "label": "Show quick view button",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hover_image",
+      "label": "Show hover image",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_variants",
+      "label": "Show variant swatches",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Grid"
+    }
+  ]
+}
+{% endschema %}
