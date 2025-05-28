@@ -1,0 +1,592 @@
+/* ==========================================================================
+   Arvidsson Footer Module CSS
+   ========================================================================== */
+
+.arvidsson-footer {
+  background-color: var(--color-text);
+  color: var(--color-white);
+  margin-top: auto;
+}
+
+/* Main Footer Content */
+.arvidsson-footer__main {
+  padding: var(--spacing-xxl) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.arvidsson-footer__content {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
+  gap: var(--spacing-xl);
+  align-items: start;
+}
+
+/* Footer Sections */
+.arvidsson-footer__section {
+  display: flex;
+  flex-direction: column;
+}
+
+.arvidsson-footer__section-title {
+  font-size: 18px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-white);
+  margin-bottom: var(--spacing-md);
+  line-height: 1.3;
+}
+
+/* Company Section */
+.arvidsson-footer__section--company {
+  padding-right: var(--spacing-lg);
+}
+
+.arvidsson-footer__logo {
+  margin-bottom: var(--spacing-md);
+}
+
+.arvidsson-footer__logo-img {
+  max-height: 40px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
+.arvidsson-footer__logo-text {
+  font-size: 24px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-white);
+}
+
+.arvidsson-footer__description {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Social Media */
+.arvidsson-footer__social {
+  margin-top: var(--spacing-md);
+}
+
+.arvidsson-footer__social-title {
+  font-size: 16px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-white);
+  margin-bottom: var(--spacing-sm);
+}
+
+.arvidsson-footer__social-links {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.arvidsson-footer__social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: all var(--transition-base);
+}
+
+.arvidsson-footer__social-link:hover {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  transform: translateY(-2px);
+}
+
+/* Navigation */
+.arvidsson-footer__nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.arvidsson-footer__nav-item {
+  margin-bottom: var(--spacing-xs);
+}
+
+.arvidsson-footer__nav-link {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 1.4;
+  transition: color var(--transition-base);
+  display: block;
+  padding: 4px 0;
+}
+
+.arvidsson-footer__nav-link:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+/* Contact Section */
+.arvidsson-footer__contact {
+  margin-bottom: var(--spacing-lg);
+}
+
+.arvidsson-footer__contact-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+}
+
+.arvidsson-footer__contact-item svg {
+  flex-shrink: 0;
+  color: var(--color-primary);
+}
+
+.arvidsson-footer__contact-item a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-base);
+}
+
+.arvidsson-footer__contact-item a:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+/* Newsletter */
+.arvidsson-footer__newsletter {
+  margin-top: var(--spacing-md);
+}
+
+.arvidsson-footer__newsletter-text {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  margin-bottom: var(--spacing-sm);
+  line-height: 1.4;
+}
+
+.arvidsson-footer__newsletter-input-group {
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: border-color var(--transition-base);
+}
+
+.arvidsson-footer__newsletter-input-group:focus-within {
+  border-color: var(--color-primary);
+}
+
+.arvidsson-footer__newsletter-input {
+  flex: 1;
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  color: var(--color-white);
+  font-size: 14px;
+  outline: none;
+}
+
+.arvidsson-footer__newsletter-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.arvidsson-footer__newsletter-btn {
+  background-color: var(--color-primary);
+  border: none;
+  color: var(--color-white);
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background-color var(--transition-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arvidsson-footer__newsletter-btn:hover {
+  background-color: var(--color-primary-dark);
+}
+
+/* Footer Bottom */
+.arvidsson-footer__bottom {
+  padding: var(--spacing-lg) 0;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.arvidsson-footer__bottom-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-lg);
+  position: relative;
+}
+
+/* Payment Methods */
+.arvidsson-footer__payments {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.arvidsson-footer__payments-label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  white-space: nowrap;
+}
+
+.arvidsson-footer__payments-list {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.arvidsson-footer__payment-icon {
+  height: 24px;
+  width: auto;
+  opacity: 0.8;
+  transition: opacity var(--transition-base);
+}
+
+.arvidsson-footer__payment-icon:hover {
+  opacity: 1;
+}
+
+/* Legal */
+.arvidsson-footer__legal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  text-align: center;
+}
+
+.arvidsson-footer__legal-nav {
+  margin-bottom: var(--spacing-xs);
+}
+
+.arvidsson-footer__legal-list {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.arvidsson-footer__legal-link {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-size: 12px;
+  transition: color var(--transition-base);
+  white-space: nowrap;
+}
+
+.arvidsson-footer__legal-link:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.arvidsson-footer__copyright {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.arvidsson-footer__copyright p {
+  margin: 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.4;
+}
+
+.arvidsson-footer__powered-by {
+  font-size: 11px !important;
+  opacity: 0.8;
+}
+
+/* Back to Top */
+.arvidsson-footer__back-to-top {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: 50%;
+  color: var(--color-white);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.arvidsson-footer__back-to-top.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.arvidsson-footer__back-to-top:hover {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 1023px) {
+  .arvidsson-footer__content {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--spacing-lg);
+  }
+  
+  .arvidsson-footer__section--company {
+    grid-column: 1 / -1;
+    padding-right: 0;
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+  }
+  
+  .arvidsson-footer__social-links {
+    justify-content: center;
+  }
+  
+  .arvidsson-footer__bottom-content {
+    flex-direction: column-reverse;
+    gap: var(--spacing-md);
+    text-align: center;
+  }
+  
+  .arvidsson-footer__payments {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .arvidsson-footer__back-to-top {
+    position: relative;
+    right: auto;
+    top: auto;
+    transform: none;
+    margin-top: var(--spacing-md);
+  }
+  
+  .arvidsson-footer__back-to-top.show {
+    transform: none;
+  }
+  
+  .arvidsson-footer__back-to-top:hover {
+    transform: scale(1.1);
+  }
+}
+
+@media (max-width: 767px) {
+  .arvidsson-footer__main {
+    padding: var(--spacing-xl) 0;
+  }
+  
+  .arvidsson-footer__content {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+  
+  .arvidsson-footer__section--company {
+    margin-bottom: var(--spacing-md);
+  }
+  
+  .arvidsson-footer__section-title {
+    font-size: 16px;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .arvidsson-footer__social-title {
+    font-size: 14px;
+  }
+  
+  .arvidsson-footer__social-links {
+    gap: var(--spacing-xs);
+  }
+  
+  .arvidsson-footer__social-link {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .arvidsson-footer__nav-link {
+    font-size: 13px;
+  }
+  
+  .arvidsson-footer__contact-item {
+    font-size: 13px;
+  }
+  
+  .arvidsson-footer__newsletter-text {
+    font-size: 13px;
+  }
+  
+  .arvidsson-footer__newsletter-input {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+  
+  .arvidsson-footer__newsletter-btn {
+    padding: 8px 10px;
+  }
+  
+  .arvidsson-footer__bottom {
+    padding: var(--spacing-md) 0;
+  }
+  
+  .arvidsson-footer__payments-label {
+    font-size: 13px;
+  }
+  
+  .arvidsson-footer__payment-icon {
+    height: 20px;
+  }
+  
+  .arvidsson-footer__legal-list {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+  
+  .arvidsson-footer__legal-link {
+    font-size: 11px;
+  }
+  
+  .arvidsson-footer__copyright p {
+    font-size: 11px;
+  }
+  
+  .arvidsson-footer__back-to-top {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .arvidsson-footer__main {
+    padding: var(--spacing-lg) 0;
+  }
+  
+  .arvidsson-footer__bottom {
+    padding: var(--spacing-sm) 0;
+  }
+  
+  .arvidsson-footer__content {
+    gap: var(--spacing-md);
+  }
+  
+  .arvidsson-footer__section-title {
+    font-size: 15px;
+  }
+  
+  .arvidsson-footer__social-link {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .arvidsson-footer__payments {
+    gap: var(--spacing-xs);
+  }
+  
+  .arvidsson-footer__payments-list {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .arvidsson-footer {
+    border-top: 3px solid var(--color-white);
+  }
+  
+  .arvidsson-footer__social-link {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  .arvidsson-footer__newsletter-input-group {
+    border-width: 2px;
+  }
+  
+  .arvidsson-footer__back-to-top {
+    border: 2px solid var(--color-white);
+  }
+}
+
+/* Print Styles */
+@media print {
+  .arvidsson-footer__social,
+  .arvidsson-footer__newsletter,
+  .arvidsson-footer__payments,
+  .arvidsson-footer__back-to-top {
+    display: none;
+  }
+  
+  .arvidsson-footer {
+    background: white;
+    color: black;
+    border-top: 2px solid black;
+  }
+  
+  .arvidsson-footer__main {
+    padding: 20px 0;
+  }
+  
+  .arvidsson-footer__bottom {
+    padding: 10px 0;
+    background: none;
+    border-top: 1px solid black;
+  }
+  
+  .arvidsson-footer__content {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  
+  .arvidsson-footer__section--company {
+    grid-column: 1 / -1;
+    text-align: left;
+    margin-bottom: 20px;
+  }
+  
+  .arvidsson-footer__logo-text,
+  .arvidsson-footer__section-title,
+  .arvidsson-footer__nav-link,
+  .arvidsson-footer__contact-item,
+  .arvidsson-footer__legal-link,
+  .arvidsson-footer__copyright p {
+    color: black !important;
+  }
+  
+  .arvidsson-footer__logo-img {
+    filter: none;
+  }
+  
+  .arvidsson-footer__nav-link:hover,
+  .arvidsson-footer__legal-link:hover {
+    color: black !important;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .arvidsson-footer__social-link,
+  .arvidsson-footer__nav-link,
+  .arvidsson-footer__newsletter-btn,
+  .arvidsson-footer__back-to-top {
+    transition: none;
+  }
+  
+  .arvidsson-footer__social-link:hover,
+  .arvidsson-footer__back-to-top:hover {
+    transform: none;
+  }
+}

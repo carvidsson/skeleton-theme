@@ -1,0 +1,168 @@
+{% comment %}
+  Arvidsson Marquee Module
+  Scrolling text banner for announcements and promotions
+{% endcomment %}
+
+{% assign marquee_text = section.settings.marquee_text | default: 'Fri frakt över 999 kr • 30 dagars öppet köp • Snabb leverans • Fri frakt över 999 kr • 30 dagars öppet köp • Snabb leverans' %}
+{% assign marquee_speed = section.settings.marquee_speed | default: 30 %}
+{% assign pause_on_hover = section.settings.pause_on_hover | default: true %}
+{% assign background_color = section.settings.background_color | default: 'dark' %}
+{% assign text_color = section.settings.text_color | default: 'white' %}
+{% assign enable_marquee = section.settings.enable_marquee | default: true %}
+{% assign marquee_link = section.settings.marquee_link %}
+
+<div class="arvidsson-marquee arvidsson-marquee--{{ background_color }} arvidsson-marquee--{{ text_color }} {% unless enable_marquee %}arvidsson-marquee--disabled{% endunless %}" 
+     id="marquee-{{ section.id }}"
+     data-section-id="{{ section.id }}"
+     data-section-type="marquee"
+     data-marquee-speed="{{ marquee_speed }}"
+     data-pause-on-hover="{{ pause_on_hover }}">
+  
+  {% if marquee_link and marquee_link != blank %}
+    <a href="{{ marquee_link }}" class="arvidsson-marquee__link" aria-label="Läs mer om {{ marquee_text | strip_html | escape }}">
+  {% endif %}
+  
+  <div class="arvidsson-marquee__container">
+    <div class="arvidsson-marquee__content" data-marquee-content>
+      <span class="arvidsson-marquee__text">{{ marquee_text }}</span>
+    </div>
+    <div class="arvidsson-marquee__content arvidsson-marquee__content--duplicate" data-marquee-content-duplicate aria-hidden="true">
+      <span class="arvidsson-marquee__text">{{ marquee_text }}</span>
+    </div>
+  </div>
+  
+  {% if marquee_link and marquee_link != blank %}
+    </a>
+  {% endif %}
+  
+  <!-- Pause/Play Controls (for accessibility) -->
+  <div class="arvidsson-marquee__controls">
+    <button class="arvidsson-marquee__control arvidsson-marquee__control--pause" 
+            data-marquee-pause 
+            aria-label="Pausa rullande text"
+            style="display: none;">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+        <rect x="6" y="4" width="4" height="16" fill="currentColor"/>
+        <rect x="14" y="4" width="4" height="16" fill="currentColor"/>
+      </svg>
+    </button>
+    <button class="arvidsson-marquee__control arvidsson-marquee__control--play" 
+            data-marquee-play 
+            aria-label="Starta rullande text">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+        <polygon points="5,3 19,12 5,21" fill="currentColor"/>
+      </svg>
+    </button>
+  </div>
+  
+</div>
+
+{% schema %}
+{
+  "name": "Scrolling Marquee",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "textarea",
+      "id": "marquee_text",
+      "label": "Marquee Text",
+      "default": "Fri frakt över 999 kr • 30 dagars öppet köp • Snabb leverans • Fri frakt över 999 kr • 30 dagars öppet köp • Snabb leverans",
+      "info": "Use • to separate different messages"
+    },
+    {
+      "type": "url",
+      "id": "marquee_link",
+      "label": "Link URL",
+      "info": "Make entire marquee clickable (optional)"
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_marquee",
+      "label": "Enable scrolling animation",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "marquee_speed",
+      "label": "Scroll Speed (seconds)",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "default": 30,
+      "info": "Time for one complete scroll cycle"
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover",
+      "default": true,
+      "info": "Pause animation when user hovers"
+    },
+    {
+      "type": "header",
+      "content": "Styling"
+    },
+    {
+      "type": "select",
+      "id": "background_color",
+      "label": "Background Color",
+      "options": [
+        {
+          "value": "dark",
+          "label": "Dark"
+        },
+        {
+          "value": "primary",
+          "label": "Primary Color"
+        },
+        {
+          "value": "light",
+          "label": "Light Gray"
+        },
+        {
+          "value": "white",
+          "label": "White"
+        }
+      ],
+      "default": "dark"
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Text Color",
+      "options": [
+        {
+          "value": "white",
+          "label": "White"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        },
+        {
+          "value": "primary",
+          "label": "Primary Color"
+        }
+      ],
+      "default": "white"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scrolling Marquee",
+      "settings": {
+        "marquee_text": "Fri frakt över 999 kr • 30 dagars öppet köp • Snabb leverans • Fri frakt över 999 kr • 30 dagars öppet köp • Snabb leverans"
+      }
+    }
+  ]
+}
+{% endschema %}

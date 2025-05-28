@@ -1,0 +1,478 @@
+/* ==========================================================================
+   Arvidsson Newsletter Module CSS
+   ========================================================================== */
+
+.arvidsson-newsletter {
+  position: relative;
+}
+
+/* Background Variations */
+.arvidsson-newsletter--white {
+  background-color: var(--color-white);
+}
+
+.arvidsson-newsletter--light {
+  background-color: var(--color-background-alt);
+}
+
+.arvidsson-newsletter--primary {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.arvidsson-newsletter--primary .arvidsson-newsletter__heading,
+.arvidsson-newsletter--primary .arvidsson-newsletter__subheading {
+  color: var(--color-white);
+}
+
+/* Container */
+.arvidsson-newsletter__container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Text Alignment */
+.arvidsson-newsletter--left .arvidsson-newsletter__container {
+  margin-left: 0;
+  text-align: left;
+}
+
+.arvidsson-newsletter--center .arvidsson-newsletter__container {
+  text-align: center;
+}
+
+.arvidsson-newsletter--right .arvidsson-newsletter__container {
+  margin-right: 0;
+  text-align: right;
+}
+
+/* Header */
+.arvidsson-newsletter__header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.arvidsson-newsletter__subheading {
+  font-size: 16px;
+  color: var(--color-text-light);
+  margin-bottom: var(--spacing-sm);
+  line-height: 1.5;
+}
+
+.arvidsson-newsletter__heading {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  color: var(--color-text);
+  margin-bottom: 0;
+  line-height: 1.2;
+}
+
+/* Form Wrapper */
+.arvidsson-newsletter__form-wrapper {
+  position: relative;
+}
+
+/* Success Message */
+.arvidsson-newsletter__success {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-lg);
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--border-radius);
+  margin-bottom: var(--spacing-lg);
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all var(--transition-base);
+}
+
+.arvidsson-newsletter__success.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.arvidsson-newsletter__success-icon {
+  color: #22c55e;
+  flex-shrink: 0;
+}
+
+.arvidsson-newsletter__success-message {
+  color: #166534;
+  font-weight: var(--font-weight-semibold);
+  margin: 0;
+}
+
+/* Newsletter Form */
+.arvidsson-newsletter__form {
+  margin-bottom: var(--spacing-lg);
+}
+
+.arvidsson-newsletter__input-group {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.arvidsson-newsletter__input-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.arvidsson-newsletter__input {
+  width: 100%;
+  padding: 14px 50px 14px 16px;
+  font-size: 16px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius);
+  background-color: var(--color-white);
+  color: var(--color-text);
+  transition: all var(--transition-base);
+}
+
+.arvidsson-newsletter__input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.1);
+}
+
+.arvidsson-newsletter__input:valid {
+  border-color: #22c55e;
+}
+
+.arvidsson-newsletter__input:invalid:not(:placeholder-shown) {
+  border-color: #ef4444;
+}
+
+.arvidsson-newsletter__input::placeholder {
+  color: var(--color-text-light);
+}
+
+/* Input Icons */
+.arvidsson-newsletter__input-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-light);
+  transition: color var(--transition-base);
+}
+
+.arvidsson-newsletter__input:focus + .arvidsson-newsletter__input-icon {
+  color: var(--color-primary);
+}
+
+.arvidsson-newsletter__input:valid + .arvidsson-newsletter__input-icon .arvidsson-newsletter__icon-email {
+  display: none;
+}
+
+.arvidsson-newsletter__input:valid + .arvidsson-newsletter__input-icon .arvidsson-newsletter__icon-check {
+  display: block;
+  color: #22c55e;
+}
+
+/* Submit Button */
+.arvidsson-newsletter__submit {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
+  overflow: hidden;
+  transition: all var(--transition-base);
+}
+
+.arvidsson-newsletter__submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(212, 165, 116, 0.3);
+}
+
+.arvidsson-newsletter__submit:active {
+  transform: translateY(0);
+}
+
+.arvidsson-newsletter__submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.arvidsson-newsletter__submit-text {
+  transition: opacity var(--transition-base);
+}
+
+.arvidsson-newsletter__submit-loading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.arvidsson-newsletter__submit.loading .arvidsson-newsletter__submit-text,
+.arvidsson-newsletter__submit.loading .arvidsson-newsletter__submit-arrow {
+  opacity: 0;
+}
+
+.arvidsson-newsletter__submit.loading .arvidsson-newsletter__submit-loading {
+  opacity: 1;
+}
+
+.arvidsson-newsletter__loader {
+  animation: spin 1s linear infinite;
+}
+
+.arvidsson-newsletter__submit-arrow {
+  transition: transform var(--transition-base);
+}
+
+.arvidsson-newsletter__submit:hover .arvidsson-newsletter__submit-arrow {
+  transform: translateX(4px);
+}
+
+/* Error Message */
+.arvidsson-newsletter__error {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: var(--border-radius);
+  color: #dc2626;
+  font-size: 14px;
+  margin-top: var(--spacing-sm);
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all var(--transition-base);
+}
+
+.arvidsson-newsletter__error.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.arvidsson-newsletter__error-text {
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Privacy Text */
+.arvidsson-newsletter__privacy {
+  font-size: 12px;
+  color: var(--color-text-light);
+  line-height: 1.4;
+  margin: var(--spacing-md) 0 0 0;
+}
+
+.arvidsson-newsletter--primary .arvidsson-newsletter__privacy {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Benefits */
+.arvidsson-newsletter__benefits {
+  margin-top: var(--spacing-xl);
+}
+
+.arvidsson-newsletter__benefits-list {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.arvidsson-newsletter__benefit {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-light);
+}
+
+.arvidsson-newsletter--primary .arvidsson-newsletter__benefit {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.arvidsson-newsletter__benefit-icon {
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.arvidsson-newsletter--primary .arvidsson-newsletter__benefit-icon {
+  color: var(--color-white);
+}
+
+/* Animations */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Visually Hidden (for screen readers) */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Responsive Design */
+@media (max-width: 767px) {
+  .arvidsson-newsletter__container {
+    max-width: 100%;
+  }
+  
+  .arvidsson-newsletter__input-group {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .arvidsson-newsletter__input {
+    padding: 16px 50px 16px 16px;
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  .arvidsson-newsletter__submit {
+    width: 100%;
+    justify-content: center;
+    padding: 16px 24px;
+  }
+  
+  .arvidsson-newsletter__benefits-list {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    text-align: center;
+  }
+  
+  .arvidsson-newsletter__benefit {
+    justify-content: center;
+  }
+  
+  .arvidsson-newsletter__heading {
+    font-size: clamp(1.25rem, 2.5vw, 2rem);
+  }
+  
+  .arvidsson-newsletter__subheading {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .arvidsson-newsletter__benefits-list {
+    gap: var(--spacing-sm);
+  }
+  
+  .arvidsson-newsletter__benefit {
+    font-size: 13px;
+  }
+  
+  .arvidsson-newsletter__privacy {
+    font-size: 11px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .arvidsson-newsletter__success,
+  .arvidsson-newsletter__error {
+    transition: none;
+  }
+  
+  .arvidsson-newsletter__submit {
+    transition: none;
+  }
+  
+  .arvidsson-newsletter__submit:hover {
+    transform: none;
+  }
+  
+  .arvidsson-newsletter__loader {
+    animation: none;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .arvidsson-newsletter__input {
+    border-width: 3px;
+  }
+  
+  .arvidsson-newsletter__submit {
+    border: 2px solid var(--color-primary);
+  }
+  
+  .arvidsson-newsletter__success {
+    border-width: 2px;
+  }
+  
+  .arvidsson-newsletter__error {
+    border-width: 2px;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .arvidsson-newsletter {
+    display: none;
+  }
+}
+
+/* Focus Styles for Better Accessibility */
+.arvidsson-newsletter__submit:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.arvidsson-newsletter__input:focus-visible {
+  outline: none; /* Using border and box-shadow for better visual */
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .arvidsson-newsletter--white {
+    background-color: #1f2937;
+  }
+  
+  .arvidsson-newsletter--light {
+    background-color: #111827;
+  }
+  
+  .arvidsson-newsletter--white .arvidsson-newsletter__heading,
+  .arvidsson-newsletter--light .arvidsson-newsletter__heading {
+    color: #f9fafb;
+  }
+  
+  .arvidsson-newsletter--white .arvidsson-newsletter__subheading,
+  .arvidsson-newsletter--light .arvidsson-newsletter__subheading {
+    color: #d1d5db;
+  }
+  
+  .arvidsson-newsletter--white .arvidsson-newsletter__input,
+  .arvidsson-newsletter--light .arvidsson-newsletter__input {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: #f9fafb;
+  }
+  
+  .arvidsson-newsletter--white .arvidsson-newsletter__input::placeholder,
+  .arvidsson-newsletter--light .arvidsson-newsletter__input::placeholder {
+    color: #9ca3af;
+  }
+}

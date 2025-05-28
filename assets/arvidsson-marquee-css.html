@@ -1,0 +1,286 @@
+/* ==========================================================================
+   Arvidsson Marquee Module CSS
+   Scrolling text banner styles
+   ========================================================================== */
+
+/* Base Marquee Styles */
+.arvidsson-marquee {
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: var(--font-weight-semibold);
+  z-index: calc(var(--z-sticky) - 1);
+  transition: all var(--transition-base);
+}
+
+/* Background Color Variants */
+.arvidsson-marquee--dark {
+  background-color: var(--color-text);
+}
+
+.arvidsson-marquee--primary {
+  background-color: var(--color-primary);
+}
+
+.arvidsson-marquee--light {
+  background-color: var(--color-background-alt);
+}
+
+.arvidsson-marquee--white {
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Text Color Variants */
+.arvidsson-marquee--white .arvidsson-marquee__text {
+  color: var(--color-white);
+}
+
+.arvidsson-marquee--dark .arvidsson-marquee__text {
+  color: var(--color-text);
+}
+
+.arvidsson-marquee--primary .arvidsson-marquee__text {
+  color: var(--color-primary);
+}
+
+/* Container and Content */
+.arvidsson-marquee__container {
+  display: flex;
+  position: relative;
+  height: 100%;
+  min-height: 32px;
+  align-items: center;
+}
+
+.arvidsson-marquee__content {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 0;
+  white-space: nowrap;
+  animation: marqueeScroll var(--marquee-duration, 30s) linear infinite;
+  animation-play-state: var(--marquee-play-state, running);
+}
+
+.arvidsson-marquee__content--duplicate {
+  position: absolute;
+  top: 0;
+  left: 100%;
+}
+
+.arvidsson-marquee__text {
+  display: inline-block;
+  padding-right: 48px;
+  transition: color var(--transition-base);
+}
+
+/* Link Styles */
+.arvidsson-marquee__link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.arvidsson-marquee__link:hover .arvidsson-marquee__text {
+  opacity: 0.8;
+}
+
+/* Disabled State */
+.arvidsson-marquee--disabled .arvidsson-marquee__content {
+  animation-play-state: paused;
+  justify-content: center;
+  padding: 8px var(--spacing-md);
+  white-space: normal;
+  text-align: center;
+}
+
+.arvidsson-marquee--disabled .arvidsson-marquee__content--duplicate {
+  display: none;
+}
+
+/* Pause on Hover */
+.arvidsson-marquee[data-pause-on-hover="true"]:hover .arvidsson-marquee__content {
+  animation-play-state: paused;
+}
+
+/* Controls */
+.arvidsson-marquee__controls {
+  position: absolute;
+  top: 50%;
+  right: var(--spacing-sm);
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.arvidsson-marquee__control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  color: currentColor;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  opacity: 0.7;
+}
+
+.arvidsson-marquee__control:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.arvidsson-marquee__control:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Animation States */
+.arvidsson-marquee.is-paused .arvidsson-marquee__content {
+  animation-play-state: paused;
+}
+
+.arvidsson-marquee.is-paused .arvidsson-marquee__control--pause {
+  display: none;
+}
+
+.arvidsson-marquee.is-paused .arvidsson-marquee__control--play {
+  display: flex;
+}
+
+.arvidsson-marquee:not(.is-paused) .arvidsson-marquee__control--pause {
+  display: flex;
+}
+
+.arvidsson-marquee:not(.is-paused) .arvidsson-marquee__control--play {
+  display: none;
+}
+
+/* Keyframe Animation */
+@keyframes marqueeScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* Multiple Message Separator Styling */
+.arvidsson-marquee__text::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background-color: currentColor;
+  border-radius: 50%;
+  margin: 0 20px;
+  vertical-align: middle;
+  opacity: 0.6;
+}
+
+.arvidsson-marquee__text:first-child::before {
+  display: none;
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .arvidsson-marquee__content {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-fill-mode: both !important;
+    animation-delay: -0.01ms !important;
+  }
+  
+  .arvidsson-marquee__content--duplicate {
+    display: none;
+  }
+  
+  .arvidsson-marquee__container {
+    justify-content: center;
+  }
+  
+  .arvidsson-marquee__content {
+    position: static;
+    transform: none !important;
+    padding: 8px var(--spacing-md);
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 767px) {
+  .arvidsson-marquee {
+    font-size: 11px;
+  }
+  
+  .arvidsson-marquee__text {
+    padding-right: 24px;
+  }
+  
+  .arvidsson-marquee__text::before {
+    margin: 0 12px;
+  }
+  
+  .arvidsson-marquee__controls {
+    right: var(--spacing-xs);
+  }
+  
+  .arvidsson-marquee__control {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .arvidsson-marquee__text {
+    padding-right: 16px;
+  }
+  
+  .arvidsson-marquee__text::before {
+    margin: 0 8px;
+    width: 3px;
+    height: 3px;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .arvidsson-marquee__control {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid currentColor;
+  }
+  
+  .arvidsson-marquee--dark {
+    border-bottom: 2px solid var(--color-white);
+  }
+  
+  .arvidsson-marquee--light,
+  .arvidsson-marquee--white {
+    border-bottom: 2px solid var(--color-text);
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .arvidsson-marquee--white {
+    background-color: var(--color-text);
+    border-bottom-color: var(--color-border);
+  }
+  
+  .arvidsson-marquee--white .arvidsson-marquee__text {
+    color: var(--color-white);
+  }
+  
+  .arvidsson-marquee--light {
+    background-color: #2a2a2a;
+  }
+}

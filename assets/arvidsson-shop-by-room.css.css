@@ -1,0 +1,433 @@
+/* ==========================================================================
+   Arvidsson Shop by Room Module CSS
+   ========================================================================== */
+
+.arvidsson-shop-by-room {
+  background-color: var(--color-background);
+}
+
+/* Section Header */
+.arvidsson-shop-by-room__header {
+  margin-bottom: var(--spacing-xxl);
+}
+
+.arvidsson-shop-by-room__subheading {
+  color: var(--color-text-light);
+  font-size: 16px;
+  margin-bottom: var(--spacing-sm);
+}
+
+.arvidsson-shop-by-room__heading {
+  color: var(--color-text);
+  margin-bottom: 0;
+}
+
+/* Grid Layouts */
+.arvidsson-shop-by-room__grid {
+  display: grid;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.arvidsson-shop-by-room__grid--grid {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.arvidsson-shop-by-room__grid--masonry {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-auto-rows: 200px;
+}
+
+.arvidsson-shop-by-room__grid--carousel {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+}
+
+/* Room Items */
+.arvidsson-shop-by-room__item {
+  position: relative;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.arvidsson-shop-by-room__item:nth-child(1) { animation-delay: 0.1s; }
+.arvidsson-shop-by-room__item:nth-child(2) { animation-delay: 0.2s; }
+.arvidsson-shop-by-room__item:nth-child(3) { animation-delay: 0.3s; }
+.arvidsson-shop-by-room__item:nth-child(4) { animation-delay: 0.4s; }
+.arvidsson-shop-by-room__item:nth-child(5) { animation-delay: 0.5s; }
+.arvidsson-shop-by-room__item:nth-child(6) { animation-delay: 0.6s; }
+
+/* Masonry specific sizing */
+.arvidsson-shop-by-room__grid--masonry .arvidsson-shop-by-room__item:nth-child(3n+1) {
+  grid-row: span 3;
+}
+
+.arvidsson-shop-by-room__grid--masonry .arvidsson-shop-by-room__item:nth-child(3n+2) {
+  grid-row: span 2;
+}
+
+.arvidsson-shop-by-room__grid--masonry .arvidsson-shop-by-room__item:nth-child(3n+3) {
+  grid-row: span 2;
+}
+
+/* Carousel specific */
+.arvidsson-shop-by-room__grid--carousel .arvidsson-shop-by-room__item {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+/* Room Card */
+.arvidsson-room-card {
+  position: relative;
+  background-color: var(--color-white);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transition-base);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.arvidsson-room-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Room Media */
+.arvidsson-room-card__media {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  background-color: var(--color-background-alt);
+}
+
+.arvidsson-room-card__link {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.arvidsson-room-card__picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.arvidsson-room-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform var(--transition-base);
+}
+
+.arvidsson-room-card:hover .arvidsson-room-card__image {
+  transform: scale(1.05);
+}
+
+.arvidsson-room-card__placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: var(--color-text-light);
+  background-color: var(--color-background-alt);
+}
+
+.arvidsson-room-card__placeholder-icon {
+  width: 60px;
+  height: 60px;
+  opacity: 0.3;
+}
+
+.arvidsson-room-card__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.2) 100%);
+  z-index: 1;
+}
+
+/* Room Content */
+.arvidsson-room-card__content {
+  padding: var(--spacing-lg);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.arvidsson-room-card__info {
+  flex: 1;
+}
+
+.arvidsson-room-card__title {
+  font-size: 20px;
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.3;
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-text);
+}
+
+.arvidsson-room-card__title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-base);
+}
+
+.arvidsson-room-card__title a:hover {
+  color: var(--color-primary);
+}
+
+.arvidsson-room-card__description {
+  color: var(--color-text-light);
+  line-height: 1.5;
+  margin-bottom: var(--spacing-md);
+  font-size: 14px;
+}
+
+.arvidsson-room-card__count {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  background-color: rgba(212, 165, 116, 0.1);
+  padding: 4px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.arvidsson-room-card__action {
+  margin-top: var(--spacing-md);
+}
+
+.arvidsson-room-card__cta {
+  width: 100%;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  transition: all var(--transition-base);
+}
+
+.arvidsson-room-card__cta:hover {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+/* Text Color Variations */
+.arvidsson-shop-by-room__item--white .arvidsson-room-card__title,
+.arvidsson-shop-by-room__item--white .arvidsson-room-card__description,
+.arvidsson-shop-by-room__item--white .arvidsson-room-card__count {
+  color: var(--color-white);
+}
+
+.arvidsson-shop-by-room__item--white .arvidsson-room-card__title a:hover {
+  color: var(--color-primary);
+}
+
+.arvidsson-shop-by-room__item--white .arvidsson-room-card__content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  z-index: 2;
+  color: var(--color-white);
+}
+
+.arvidsson-shop-by-room__item--white .arvidsson-room-card__cta {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--color-white);
+  border-color: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.arvidsson-shop-by-room__item--white .arvidsson-room-card__cta:hover {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* Section Footer */
+.arvidsson-shop-by-room__footer {
+  margin-top: var(--spacing-xl);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1023px) {
+  .arvidsson-shop-by-room__grid--grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+  
+  .arvidsson-shop-by-room__grid--masonry {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-auto-rows: 180px;
+  }
+  
+  .arvidsson-shop-by-room__grid--carousel {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+  
+  .arvidsson-room-card__content {
+    padding: var(--spacing-md);
+  }
+  
+  .arvidsson-room-card__title {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 767px) {
+  .arvidsson-shop-by-room__header {
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  .arvidsson-shop-by-room__grid {
+    gap: var(--spacing-md);
+  }
+  
+  .arvidsson-shop-by-room__grid--grid,
+  .arvidsson-shop-by-room__grid--masonry,
+  .arvidsson-shop-by-room__grid--carousel {
+    grid-template-columns: 1fr;
+  }
+  
+  .arvidsson-shop-by-room__grid--masonry .arvidsson-shop-by-room__item {
+    grid-row: span 2;
+  }
+  
+  .arvidsson-shop-by-room__grid--carousel {
+    display: flex;
+    overflow-x: auto;
+    gap: var(--spacing-sm);
+    padding: 0 var(--spacing-sm);
+    margin: 0 calc(-1 * var(--spacing-sm));
+  }
+  
+  .arvidsson-shop-by-room__grid--carousel .arvidsson-shop-by-room__item {
+    min-width: 280px;
+    max-width: 280px;
+  }
+  
+  .arvidsson-room-card__media {
+    aspect-ratio: 3/2;
+  }
+  
+  .arvidsson-room-card__content {
+    padding: var(--spacing-sm);
+  }
+  
+  .arvidsson-room-card__title {
+    font-size: 16px;
+  }
+  
+  .arvidsson-room-card__description {
+    font-size: 13px;
+  }
+  
+  .arvidsson-room-card:hover {
+    transform: translateY(-4px);
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .arvidsson-shop-by-room__item {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  
+  .arvidsson-room-card {
+    transition: none;
+  }
+  
+  .arvidsson-room-card:hover {
+    transform: none;
+  }
+  
+  .arvidsson-room-card__image {
+    transition: none;
+  }
+  
+  .arvidsson-room-card:hover .arvidsson-room-card__image {
+    transform: none;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .arvidsson-room-card {
+    border: 2px solid var(--color-border);
+  }
+  
+  .arvidsson-room-card__overlay {
+    background: rgba(0, 0, 0, 0.6);
+  }
+  
+  .arvidsson-shop-by-room__item--white .arvidsson-room-card__content {
+    background: rgba(0, 0, 0, 0.9);
+  }
+}
+
+/* Print Styles */
+@media print {
+  .arvidsson-shop-by-room__grid {
+    display: block;
+  }
+  
+  .arvidsson-shop-by-room__item {
+    break-inside: avoid;
+    margin-bottom: 20px;
+  }
+  
+  .arvidsson-room-card {
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+  
+  .arvidsson-room-card__overlay {
+    display: none;
+  }
+  
+  .arvidsson-room-card__cta {
+    display: none;
+  }
+}
+
+/* Custom Scrollbar for Carousel */
+.arvidsson-shop-by-room__grid--carousel::-webkit-scrollbar {
+  height: 6px;
+}
+
+.arvidsson-shop-by-room__grid--carousel::-webkit-scrollbar-track {
+  background: var(--color-background-alt);
+  border-radius: 3px;
+}
+
+.arvidsson-shop-by-room__grid--carousel::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 3px;
+}
+
+.arvidsson-shop-by-room__grid--carousel::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-dark);
+}
