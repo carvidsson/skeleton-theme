@@ -11,6 +11,18 @@
   "type": "header",
   "name": "t:general.header",
   "sections": {
+    "arvidsson_marquee_7pgwit": {
+      "type": "arvidsson-marquee",
+      "settings": {
+        "marquee_text": "Fri frakt över 999 kr • 30 dagars öppet köp • Snabb leverans • Fri frakt över 999 kr • 30 dagars öppet köp • Snabb leverans",
+        "marquee_link": "",
+        "enable_marquee": true,
+        "marquee_speed": 30,
+        "pause_on_hover": true,
+        "background_color": "dark",
+        "text_color": "white"
+      }
+    },
     "header": {
       "type": "header",
       "settings": {
@@ -47,7 +59,6 @@
         "benefit_cEwB8N",
         "benefit_7bnFBB"
       ],
-      "name": "Newsletter Signup",
       "settings": {
         "heading": "Håll dig uppdaterad",
         "subheading": "Få de senaste nyheterna, erbjudandena och inspirationen direkt i din inkorg",
@@ -61,23 +72,27 @@
         "show_benefits": false
       }
     },
-    "arvidsson_marquee_7pgwit": {
-      "type": "arvidsson-marquee",
-      "name": "Scrolling Marquee",
+    "arvidsson_hero_VitDPQ": {
+      "type": "arvidsson-hero",
+      "name": "Hero Banner",
       "settings": {
-        "marquee_text": "Fri frakt över 999 kr • 30 dagars öppet köp • Snabb leverans • Fri frakt över 999 kr • 30 dagars öppet köp • Snabb leverans",
-        "marquee_link": "",
-        "enable_marquee": true,
-        "marquee_speed": 30,
-        "pause_on_hover": true,
-        "background_color": "dark",
-        "text_color": "white"
+        "hero_video": "",
+        "hero_overlay": 0.3,
+        "hero_subtitle": "Upptäck vårt skandinaviska sortiment",
+        "hero_title": "Välkommen till Arvidsson",
+        "hero_description": "Skapa ditt drömhem med våra noggrant utvalda produkter som kombinerar funktionalitet med tidlös design.",
+        "hero_button_text": "Handla nu",
+        "hero_button_url": "",
+        "hero_height": "medium",
+        "hero_text_alignment": "left",
+        "show_scroll_indicator": true
       }
     }
   },
   "order": [
+    "arvidsson_marquee_7pgwit",
     "header",
     "arvidsson_newsletter_cEwajW",
-    "arvidsson_marquee_7pgwit"
+    "arvidsson_hero_VitDPQ"
   ]
 }
