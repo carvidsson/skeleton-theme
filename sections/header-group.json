@@ -56,8 +56,8 @@
             "title": "Vardagsrum",
             "description": "Skapa en mysig och funktionell mötesplats för familj och vänner",
             "custom_url": "",
-            "overlay_opacity": 0.3,
-            "text_color": "white"
+            "overlay_opacity": 0,
+            "text_color": "dark"
           }
         },
         "room_category_gDmtnz": {
