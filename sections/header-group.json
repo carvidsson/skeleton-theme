@@ -19,8 +19,8 @@
         "enable_marquee": true,
         "marquee_speed": 30,
         "pause_on_hover": true,
-        "background_color": "dark",
-        "text_color": "white"
+        "background_color": "white",
+        "text_color": "primary"
       }
     },
     "header": {
@@ -129,7 +129,6 @@
         "room_category_DbnFjC",
         "room_category_8xLB4B"
       ],
-      "name": "Shop by Room",
       "settings": {
         "heading": "Handla efter rum",
         "subheading": "Upptäck våra kollektioner för varje rum i ditt hem",
@@ -185,7 +184,6 @@
     },
     "arvidsson_top_sellers_WCVQad": {
       "type": "arvidsson-top-sellers",
-      "name": "Top Sellers",
       "settings": {
         "heading": "Populära produkter",
         "subheading": "Våra mest älskade produkter",
@@ -245,7 +243,6 @@
         "review_BBVecL",
         "review_4jWxW6"
       ],
-      "name": "Customer Reviews",
       "settings": {
         "heading": "Vad våra kunder säger",
         "subheading": "Över 10,000+ nöjda kunder har valt Arvidsson",
