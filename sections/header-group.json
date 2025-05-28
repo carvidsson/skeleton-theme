@@ -29,6 +29,21 @@
         "menu": ""
       }
     },
+    "arvidsson_hero_VitDPQ": {
+      "type": "arvidsson-hero",
+      "settings": {
+        "hero_video": "https://cdn-cms-assets.article.com/5RmI49YMqZLgoIltmxrOC9-09520c9c736fc3306917e7befdc2b8a0",
+        "hero_overlay": 0.3,
+        "hero_subtitle": "Upptäck vårt skandinaviska sortiment",
+        "hero_title": "Välkommen",
+        "hero_description": "Skapa ditt drömhem med våra noggrant utvalda produkter som kombinerar funktionalitet med tidlös design.",
+        "hero_button_text": "Handla nu",
+        "hero_button_url": "",
+        "hero_height": "medium",
+        "hero_text_alignment": "left",
+        "show_scroll_indicator": true
+      }
+    },
     "arvidsson_newsletter_cEwajW": {
       "type": "arvidsson-newsletter",
       "blocks": {
@@ -71,28 +86,12 @@
         "text_alignment": "center",
         "show_benefits": false
       }
-    },
-    "arvidsson_hero_VitDPQ": {
-      "type": "arvidsson-hero",
-      "name": "Hero Banner",
-      "settings": {
-        "hero_video": "",
-        "hero_overlay": 0.3,
-        "hero_subtitle": "Upptäck vårt skandinaviska sortiment",
-        "hero_title": "Välkommen till Arvidsson",
-        "hero_description": "Skapa ditt drömhem med våra noggrant utvalda produkter som kombinerar funktionalitet med tidlös design.",
-        "hero_button_text": "Handla nu",
-        "hero_button_url": "",
-        "hero_height": "medium",
-        "hero_text_alignment": "left",
-        "show_scroll_indicator": true
-      }
     }
   },
   "order": [
     "arvidsson_marquee_7pgwit",
     "header",
-    "arvidsson_newsletter_cEwajW",
-    "arvidsson_hero_VitDPQ"
+    "arvidsson_hero_VitDPQ",
+    "arvidsson_newsletter_cEwajW"
   ]
 }
